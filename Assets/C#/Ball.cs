@@ -7,7 +7,10 @@ public class Ball : MonoBehaviour
 {
     public LineRenderer Lr;
     private Vector2 InitialMousePosition;
+    private Vector2 BallPosition;
     private Vector2 MousePosition;
+
+    public bool _drag = false;
 
 
     // Start is called before the first frame update
@@ -35,5 +38,12 @@ public class Ball : MonoBehaviour
             Lr.SetPosition(0, transform.position);
             Lr.SetPosition(1, MousePosition);
         }
+        if (Input.GetMouseButtonUp(0))
+        {
+            BallPosition = BallObject.transform.position;
+            DragRelease(InitialMousePosition, MousePosition, BallPosition);
+            _drag = true;
+        }
+
     }
 }
