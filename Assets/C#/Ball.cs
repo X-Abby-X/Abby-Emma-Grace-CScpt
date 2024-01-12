@@ -5,7 +5,10 @@ using System;
 
 public class Ball : MonoBehaviour
 {
+    public Rigidbody2D BallObject;
     public LineRenderer Lr;
+    private float _distance;
+    public float _powerFactor = 2f;
     private Vector2 InitialMousePosition;
     private Vector2 BallPosition;
     private Vector2 MousePosition;
@@ -43,6 +46,17 @@ public class Ball : MonoBehaviour
             BallPosition = BallObject.transform.position;
             DragRelease(InitialMousePosition, MousePosition, BallPosition);
             _drag = true;
+        }
+
+        void DragRelease(Vector2 InitMousepos, Vector2 Mousepos, Vector2 BallPos)
+        {
+            Vector2 Direction = BallPos - Mousepos;
+
+            _distance = (float)Math.Sqrt(Math.Pow((Mousepos.x - InitMousepos.x), 2.00f) + Math.Pow((Mousepos.y - InitMousepos.y), 2.00f));
+
+            BallObject.AddForce(Direction * (_distance * _powerFactor), ForceMode2D.Impulse);
+
+            Lr.positionCount = 0;
         }
 
     }
