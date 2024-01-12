@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     public int Money;
     public int Xp;
     public int Level;
-
+    public SceneController SceneController;
     public List<GameObject> Inventory = new List<GameObject>();
     public Dictionary<GameObject, int> SortedInventory = new Dictionary<GameObject, int>();
 
@@ -67,13 +67,14 @@ public class Player : MonoBehaviour
             float v = Input.GetAxis("Vertical");
             float h = Input.GetAxis("Horizontal");
 
-            Vector2 pos = transform.position;
+            Vector2 pos = SceneController.playerOnMapPosition;
 
             pos.y += v * 3 * Time.deltaTime;
             pos.x += h * 3 * Time.deltaTime;
 
             transform.position = pos;
 
+            SceneController.playerOnMapPosition = transform.position;
         }
         else
         {
@@ -81,5 +82,25 @@ public class Player : MonoBehaviour
             this.gameObject.transform.position = new Vector3(1.5f, 7f, 0);
         }
 
+    }
+
+    // pigeon sort
+    public void SortItemList(List<GameObject> list, Dictionary<GameObject, int> Dictionary)
+    {
+        Dictionary.Clear();
+
+        foreach (GameObject items in list)
+        {
+            if (Dictionary.ContainsKey(items))
+            {
+                Dictionary[items] += 1;
+                Debug.Log("Found");
+            }
+            else
+            {
+                Dictionary.Add(items, 1);
+                Debug.Log("new");
+            }
+        }
     }
 }
