@@ -84,6 +84,37 @@ public class Player : MonoBehaviour
 
     }
 
+    void OnTriggerStay2D(Collider2D collision)
+    {
+        if (Input.GetKey(KeyCode.Return))
+        {
+
+            if (collision.tag == "Store")
+            {
+                SceneManager.LoadScene("Store");
+            }
+            else
+            {
+                if (collision.tag == "Fighthouse1")
+                {
+                    MarbleGameController.level = 1;
+                }
+                else if (collision.tag == "Fighthouse2")
+                {
+                    MarbleGameController.level = 2;
+                }
+                else if (collision.tag == "Fighthouse3")
+                {
+                    MarbleGameController.level = 3;
+                }
+                SceneManager.LoadScene("Prep");
+            }
+
+            
+        }
+
+    }
+
     // pigeon sort
     public void SortItemList(List<Item> list, Dictionary<Item, int> Dictionary)
     {

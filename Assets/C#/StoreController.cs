@@ -23,7 +23,7 @@ public class StoreController : MonoBehaviour
     void Awake()
     {
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
-        SceneController = GameObject.FindWithTag("SceneController").GetComponent<SceneController>();
+        SceneController = GameObject.FindWithTag("Scene Controller").GetComponent<SceneController>();
         CreateStoreInventory();
         SpawnButton();
     }

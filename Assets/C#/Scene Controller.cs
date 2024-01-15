@@ -18,7 +18,7 @@ public class SceneController : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
         // idk why it need that but it need it
-        GameObject[] objects = GameObject.FindGameObjectsWithTag("SceneController");
+        GameObject[] objects = GameObject.FindGameObjectsWithTag("Scene Controller");
 
         if (objects.Length > 1)
         {
