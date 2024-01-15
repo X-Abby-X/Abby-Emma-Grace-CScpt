@@ -24,13 +24,15 @@ public class Ball : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    { }
+    {
+
+    }
     public void UserInput()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            _hitMarble.Clear();
-            SortedMarble.Clear();
+            //_hitMarble.Clear();
+            //SortedMarble.Clear();
             InitialMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
 
