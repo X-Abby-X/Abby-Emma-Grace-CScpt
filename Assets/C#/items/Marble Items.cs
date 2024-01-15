@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MarbleItems : Items
+public class MarbleItems : Item
 {
     public int ColourValue;
     public MarbleItems(int level, string type, string name, int cost, string colour) : base(level, type, name, cost)
