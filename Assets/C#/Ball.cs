@@ -14,6 +14,10 @@ public class Ball : MonoBehaviour
     private Vector2 MousePosition;
 
     public bool _drag = false;
+    private bool _hit = false;
+
+    private List<GameObject> _hitMarble = new List<GameObject>();
+
 
 
     // Start is called before the first frame update
@@ -59,6 +63,19 @@ public class Ball : MonoBehaviour
             BallObject.AddForce(Direction * (_distance * _powerFactor), ForceMode2D.Impulse);
 
             Lr.positionCount = 0;
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.tag == "Marble")
+            {
+                _hitMarble.Add(collision.gameObject);
+                collision.gameObject.transform.position = new Vector3(UnityEngine.Random.Range(-0.96f, -1.13f), -1.15f, 0);
+                Rigidbody2D rb = collision.gameObject.AddComponent<Rigidbody2D>();
+                collision.gameObject.GetComponent<Rigidbody2D>().mass = 0;
+                collision.gameObject.GetComponent<Collider2D>().isTrigger = false;
+                _hit = true;
+            }
         }
 
     }
