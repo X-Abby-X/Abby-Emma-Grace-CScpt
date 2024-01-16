@@ -5,6 +5,8 @@ using System;
 
 public class Ball : MonoBehaviour
 {
+    public MarbleGameController MarbleGameController;
+
     public Rigidbody2D BallObject;
     public LineRenderer Lr;
     private float _distance;
@@ -27,9 +29,32 @@ public class Ball : MonoBehaviour
     //}
 
     // Update is called once per frame
+
     void Update()
     {
+        if (MarbleGameController.GameStart)
+        {
+            if (_drag == false)
+            {
+                UserInput();
 
+            }
+            if (_hit == true)
+            {
+                SortedMarble = Sort(_hitMarble);
+
+            }
+            BallStop();
+        }
+    }
+
+    public void BallStop()
+    {
+        if (_drag && BallObject.velocity.magnitude < 0.2f)
+        {
+            StartCoroutine(MarbleGameController.AttackGameSquence());
+            _drag = false;
+        }
     }
 
     public void UserInput()
@@ -100,8 +125,5 @@ public class Ball : MonoBehaviour
 
         return ColourCount;
     }
-
-
-
-
 }
+
