@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Marble
+  - Fighthouse1
+  - Fighthouse2
+  - Fighthouse3
+  - Store
+  - Scene Controller
   layers:
   - Default
   - TransparentFX

@@ -6,7 +6,8 @@ public class SceneController : MonoBehaviour
 {
 
     public Vector2 playerOnMapPosition;
-    public GameObject player;
+    public List<bool> StoreButtonActiveList = new List<bool>();
+    public Player player;
 
     void Awake()
     {
@@ -15,8 +16,9 @@ public class SceneController : MonoBehaviour
 
     void Start()
     {
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
         // idk why it need that but it need it
-        GameObject[] objects = GameObject.FindGameObjectsWithTag("SceneController");
+        GameObject[] objects = GameObject.FindGameObjectsWithTag("Scene Controller");
 
         if (objects.Length > 1)
         {

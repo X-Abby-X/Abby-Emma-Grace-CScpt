@@ -10,16 +10,17 @@ public class Player : MonoBehaviour
     public int Xp;
     public int Level;
     public SceneController SceneController;
-    public List<GameObject> Inventory = new List<GameObject>();
-    public Dictionary<GameObject, int> SortedInventory = new Dictionary<GameObject, int>();
+    public List<Item> Inventory = new List<Item>();
+    public Dictionary<Item, int> SortedInventory = new Dictionary<Item, int>();
 
-    public List<GameObject> Backpack = new List<GameObject>();
-    public Dictionary<GameObject, int> SortedBackpack = new Dictionary<GameObject, int>();
+    public List<Item> Backpack = new List<Item>();
+    public Dictionary<Item, int> SortedBackpack = new Dictionary<Item, int>();
 
 
     // Start is called before the first frame update
     void Start()
     {
+        this.gameObject.transform.position = SceneController.playerOnMapPosition;
         GameObject[] objects = GameObject.FindGameObjectsWithTag("Player");
 
         if (objects.Length > 1)
@@ -47,20 +48,19 @@ public class Player : MonoBehaviour
         Debug.Log(this.Xp);
         Debug.Log(this.Level);
 
-        foreach (GameObject item in Inventory)
+        foreach (Item item in Inventory)
         {
             Debug.Log(item);
         }
 
-        foreach (GameObject item in Backpack)
+        foreach (Item item in Backpack)
         {
             Debug.Log(item);
         }
     }
 
-    private void Playermovement()
+    void Playermovement()
     {
-
         if (SceneManager.GetActiveScene().name == "world map")
         {
             //arrow key input
@@ -84,12 +84,43 @@ public class Player : MonoBehaviour
 
     }
 
+    void OnTriggerStay2D(Collider2D collision)
+    {
+        if (Input.GetKey(KeyCode.Return))
+        {
+
+            if (collision.tag == "Store")
+            {
+                SceneManager.LoadScene("Store");
+            }
+            else
+            {
+                if (collision.tag == "Fighthouse1")
+                {
+                    MarbleGameController.level = 1;
+                }
+                else if (collision.tag == "Fighthouse2")
+                {
+                    MarbleGameController.level = 2;
+                }
+                else if (collision.tag == "Fighthouse3")
+                {
+                    MarbleGameController.level = 3;
+                }
+                SceneManager.LoadScene("Prep");
+            }
+
+            
+        }
+
+    }
+
     // pigeon sort
-    public void SortItemList(List<GameObject> list, Dictionary<GameObject, int> Dictionary)
+    public void SortItemList(List<Item> list, Dictionary<Item, int> Dictionary)
     {
         Dictionary.Clear();
 
-        foreach (GameObject items in list)
+        foreach (Item items in list)
         {
             if (Dictionary.ContainsKey(items))
             {

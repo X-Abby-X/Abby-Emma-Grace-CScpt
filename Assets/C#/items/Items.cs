@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public abstract class Items
+public abstract class Item
 {
 
     public int Level;
@@ -11,7 +11,7 @@ public abstract class Items
     public string Name;
     public int Cost;
 
-    public Items(int level, string type, string name, int cost)
+    public Item(int level, string type, string name, int cost)
     {
         this.Name = name;
         this.Level = level;

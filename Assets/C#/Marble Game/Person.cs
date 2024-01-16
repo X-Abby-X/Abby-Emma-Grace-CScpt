@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class Person : MonoBehaviour
 {
+    public MarbleGameController MarbleGameController;
     public int Health;
     public int Strength;
     public string Colour;
