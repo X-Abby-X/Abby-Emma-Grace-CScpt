@@ -146,6 +146,50 @@ public class MarbleGameController : MonoBehaviour
         }
     }
 
+    void SpawnMarble()
+    {
+        float _localScale = 0.08f;
+        float _radius = 1.1f;
+
+        for (int i = 0; i < _marbleNum; i++)
+        {
+            if (randomColour)
+            {
+                _colourType = Random.Range(1, 4);
+            }
+
+            _marbleX = Random.Range(0.4f, 8);
+            _marbleY = Random.Range(-4, 4);
+
+            GameObject newMarble = (GameObject)Instantiate(Marbleprefab, new Vector3(_marbleX, _marbleY, 0), Quaternion.identity);
+            newMarble.transform.localScale = new Vector3(_localScale, _localScale, _localScale);
+            newMarble.GetComponent<CircleCollider2D>().radius = _radius;
+
+
+
+            newMarble.GetComponent<Marble>()._value = 1;
+
+            if (_colourType == 1)
+            {
+                newMarble.GetComponent<Marble>().Colour = "Red";
+                newMarble.GetComponent<SpriteRenderer>().sprite = newMarble.GetComponent<Marble>().spriteArray[0];
+            }
+            else if (_colourType == 2)
+            {
+
+                newMarble.GetComponent<Marble>().Colour = "Yellow";
+                newMarble.GetComponent<SpriteRenderer>().sprite = newMarble.GetComponent<Marble>().spriteArray[1];
+            }
+            else
+            {
+                newMarble.GetComponent<Marble>().Colour = "Blue";
+                newMarble.GetComponent<SpriteRenderer>().sprite = newMarble.GetComponent<Marble>().spriteArray[2];
+            }
+
+            MarbleList.Add(newMarble);
+        }
+    }
+
     void SpawnTextBox(float x, float y, string content)
     {
         TMP_Text newtext = (TMP_Text)Instantiate(text, new Vector3(x, y, 0), Quaternion.identity);
