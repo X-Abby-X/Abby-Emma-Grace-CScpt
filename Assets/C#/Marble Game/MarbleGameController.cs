@@ -6,25 +6,23 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 using static UnityEditor.Progress;
-using UnityEngine.TextCore.Text;
-using static System.Net.Mime.MediaTypeNames;
 
 public class MarbleGameController : MonoBehaviour
 {
     // Enemy
-    public List<GameObject> EnemyList = new List<GameObject>();
-    public GameObject Enemyprefab;
     private int _enemyNum = 3;
     private float[] _enemyX = { -7.03f, -4.46f, -2.15f };
     private float _enemyY = 2.9f;
     private int _enemyTotalHp;
+    public List<GameObject> EnemyList = new List<GameObject>();
+    public GameObject Enemyprefab;
     public Dictionary<string, List<GameObject>> ColourEnemylist = new Dictionary<string, List<GameObject>>();
 
     // Character
-    public GameObject Characterprefeb;
     private float _characterX = -7.84f;
     private float _characterY = -1.73f;
     public int CharaterTotalHp;
+    public GameObject Characterprefeb;
     public List<GameObject> CharacterList = new List<GameObject>();
 
     // Text box
@@ -32,8 +30,172 @@ public class MarbleGameController : MonoBehaviour
     public TMP_Text text;
     public List<TMP_Text> TextList = new List<TMP_Text>();
 
+    // Marbles
+    public List<GameObject> MarbleList = new List<GameObject>();
+
+    private bool randomColour = true;
+    private int _colourType = 0;
+
+    // Game control
+    public bool GameStart = false;
+    public int level = 0;
+    public bool Win;
+    public int xpEarned = 0;
+    public int MoneyEarned = 0;
+    public Player player;
+
+    private void Awake()
+    {
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
+    }
+
+    IEnumerator Start()
+    {
+        SpawnCharacter();
+        SpawnEnemy(level);
+        SortEnemy(EnemyList);
+        updateValues();
+        ApplyMarbleColourPowerUp();
+
+        GameSequence();
+        yield return new WaitForSeconds(0f);
+    }
+
+    void GameSequence()
+    {
+        for (int i = 0; i < MarbleList.Count; i++)
+        {
+            Destroy(MarbleList[i]);
+        }
+
+        MarbleList.Clear();
+        SpawnMarble();
+        CharacterList[0].GetComponent<Character>().Strength = player.Level;
+
+        GameStart = true;
+
+
+        if (CharaterTotalHp == 0 || _enemyTotalHp == 0)
+        {
+            EndGame();
+        }
+    }
+
+    void EndGame()
+    {
+        if (CharaterTotalHp != 0)
+        {
+            Win = true;
+            if (level == 1)
+            {
+                xpEarned = 10;
+                MoneyEarned = 10;
+            }
+            else if (level == 2)
+            {
+                xpEarned = 25;
+                MoneyEarned = 25;
+            }
+            else if (level == 3)
+            {
+                xpEarned = 40;
+                MoneyEarned = 50;
+            }
+            player.Xp += xpEarned;
+            player.Money += MoneyEarned;
+            player.levelUp();
+        }
+        else
+        {
+            Win = false;
+        }
+
+        GameStart = false;
+        player.GetStats();
+        SceneManager.LoadScene("Result");
+    }
+
+    public IEnumerator AttackGameSequence()
+    {
+        foreach (GameObject character in CharacterList)
+        {
+            character.GetComponent<Character>().Attack();
+        }
+        updateValues();
+        yield return new WaitForSeconds(0.5f);
+
+        foreach (GameObject enemy in EnemyList)
+        {
+            enemy.GetComponent<Enemy>().Attack();
+        }
+        updateValues();
+        yield return new WaitForSeconds(0.5f);
+        Debug.Log($"enemy health {_enemyTotalHp}, character health {CharaterTotalHp}");
+
+        GameSequence();
+    }
+
+    void ApplyMarbleColourPowerUp()
+    {
+        Debug.Log("ApplyPowerUp method start");
+        foreach (KeyValuePair<Item, int> kvp in player.SortedBackpack)
+        {
+            if (kvp.Key is MarbleItems)
+            {
+                Debug.Log("found MarbleItems");
+                MarbleItems powerup = (MarbleItems)kvp.Key;
+                if (powerup.Type == "colour")
+                {
+                    if (kvp.Value >= 1)
+                    {
+                        Debug.Log("found colour");
+                        _colourType = powerup.ColourValue;
+                        player.SortedInventory[kvp.Key] -= 1;
+                        Debug.Log(kvp.Value);
+                        randomColour = false;
+                    }
+
+                    if (kvp.Value <= 1)
+                    {
+                        player.Inventory.Remove(kvp.Key);
+                        player.SortedInventory.Remove(kvp.Key);
+                        player.SortItemList(player.Inventory, player.SortedInventory);
+
+                    }
+                    break;
+                }
+            }
+
+        }
+    }
+
     void SpawnEnemy(int level)
     {
+        Debug.Log("ApplyPowerUp method start");
+        foreach (KeyValuePair<Item, int> kvp in player.SortedBackpack)
+        {
+            if (kvp.Key is OtherItems)
+            {
+                Debug.Log("found OtherItems");
+                OtherItems powerup = (OtherItems)kvp.Key;
+                if (powerup.Type == "attack")
+                {
+                    if (kvp.Value >= 1)
+                    {
+                        _enemyNum -= 1;
+                        player.SortedInventory[kvp.Key] -= 1;
+                    }
+
+                    if (kvp.Value <= 1)
+                    {
+                        player.Inventory.Remove(kvp.Key);
+                        player.SortedInventory.Remove(kvp.Key);
+                        player.SortItemList(player.Inventory, player.SortedInventory);
+                    }
+                }
+            }
+        }
+
         for (int i = 0; i < _enemyNum; i++)
         {
             int _type = Random.Range(1, 4);

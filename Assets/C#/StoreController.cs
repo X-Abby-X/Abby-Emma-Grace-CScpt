@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 using static UnityEditor.Progress;
@@ -58,11 +59,11 @@ public class StoreController : MonoBehaviour
             int num = i;
             if (i < 3)
             {
-                ButtonList[i].onClick.AddListener(delegate { NotDoneYet(num); });
+                ButtonList[i].onClick.AddListener(delegate { OneTimePowerUp(num); });
             }
             else if (i >= 3)
             {
-                ButtonList[i].onClick.AddListener(delegate { NotDoneYet(num); });
+                ButtonList[i].onClick.AddListener(delegate { MutiplePowerUp(num); });
             }
         }
     }
@@ -93,8 +94,38 @@ public class StoreController : MonoBehaviour
         player.SortItemList(player.Inventory, player.SortedInventory);
     }
 
-    void NotDoneYet(int i)
+    public void OneTimePowerUp(int i)
     {
+        Debug.Log("button pressed");
+        if (player.Money >= StoreInventory[i].Cost)
+        {
+            Buy(StoreInventory[i]);
+            SceneController.StoreButtonActiveList[i] = false;
+            ButtonList[i].interactable = false;
+        }
+        else
+        {
+            Debug.Log("you're broke");
+        }
 
+
+    }
+
+    public void MutiplePowerUp(int i)
+    {
+        Debug.Log("button pressed");
+        if (player.Money >= StoreInventory[i].Cost)
+        {
+            Buy(StoreInventory[i]);
+        }
+        else
+        {
+            Debug.Log("you're broke");
+        }
+    }
+
+    public void Inventory()
+    {
+        SceneManager.LoadScene("Inventory");
     }
 }

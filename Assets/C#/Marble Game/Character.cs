@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TreeEditor;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class Character : Person
 {
     public int MaxHealth;
+    public Player player;
     public Ball ball;
     private bool _bonus = false;
     public bool _applied = false;
@@ -14,6 +16,38 @@ public class Character : Person
     public Character(string colour, int health, int strength) : base(colour, health, strength)
     {
         this.MaxHealth = health;
+    }
+
+    void Awake()
+    {
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
+    }
+
+    void Start()
+    {
+        ApplyPowerUp();
+    }
+
+    void ApplyPowerUp()
+    {
+        foreach (Item item in player.SortedBackpack.Keys)
+        {
+            if (item is StatsItems)
+            {
+                StatsItems powerup = (StatsItems)item;
+                if (powerup.Type == "strength")
+                {
+                    this.Strength = powerup.Ability(this.Strength);
+                    Debug.Log(this.Strength);
+                }
+                else if (powerup.Type == "hp")
+                {
+                    this.Health = powerup.Ability(this.Health);
+                    MaxHealth = this.Health;
+                    MarbleGameController.updateValues();
+                }
+            }
+        }
     }
 
     public override void Attack()
@@ -76,6 +110,44 @@ public class Character : Person
             }
         }
         _applied = false;
+        MarbleGameController.updateValues();
+    }
+
+    void ApplyHealthPowerUp()
+    {
+        Debug.Log("ApplyPowerUp method start");
+        foreach (KeyValuePair<Item, int> kvp in player.SortedBackpack)
+        {
+            if (kvp.Key is OtherItems)
+            {
+                Debug.Log("found OtherItems");
+                OtherItems powerup = (OtherItems)kvp.Key;
+                if (powerup.Type == "Hp")
+                {
+                    Debug.Log("found Hp");
+                    if (kvp.Value >= 1)
+                    {
+                        Debug.Log(this.MaxHealth);
+                        this.Health = this.MaxHealth;
+                        _applied = true;
+                        player.SortedInventory[kvp.Key] -= 1;
+                    }
+
+                    if (kvp.Value <= 1)
+                    {
+                        player.Inventory.Remove(kvp.Key);
+                        player.SortedInventory.Remove(kvp.Key);
+                        player.SortItemList(player.Inventory, player.SortedInventory);
+
+                        player.Backpack.Remove(kvp.Key);
+                        player.SortedBackpack.Remove(kvp.Key);
+                        player.SortItemList(player.Inventory, player.SortedBackpack);
+                    }
+                    break;
+                }
+            }
+        }
+
         MarbleGameController.updateValues();
     }
 }
