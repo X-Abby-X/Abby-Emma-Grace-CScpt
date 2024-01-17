@@ -52,7 +52,7 @@ public class Ball : MonoBehaviour
     {
         if (_drag && BallObject.velocity.magnitude < 0.2f)
         {
-            StartCoroutine(MarbleGameController.AttackGameSquence());
+            StartCoroutine(MarbleGameController.AttackGameSequence());
             _drag = false;
         }
     }
