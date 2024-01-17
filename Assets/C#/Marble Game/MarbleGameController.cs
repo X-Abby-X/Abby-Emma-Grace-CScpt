@@ -38,11 +38,16 @@ public class MarbleGameController : MonoBehaviour
 
     // Game control
     public bool GameStart = false;
-    public static int level = 0;
-    public static bool Win;
-    public static int xpEarned = 0;
-    public static int MoneyEarned = 0;
+    public int level = 0;
+    public bool Win;
+    public int xpEarned = 0;
+    public int MoneyEarned = 0;
     public Player player;
+
+    private void Awake()
+    {
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
+    }
 
     IEnumerator Start()
     {

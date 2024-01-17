@@ -20,15 +20,13 @@ public abstract class Person : MonoBehaviour
     public abstract void Attack();
     public virtual void TakeDamage(int damage)
     {
+        this.Health -= damage;
+        if (this.Health <= 0)
         {
-            this.Health -= damage;
-            if (this.Health <= 0)
-            {
-                this.Health = 0;
-                this.IsDefeated();
-            }
-            MarbleGameController.updateValues();
+            this.Health = 0;
+            this.IsDefeated();
         }
+        MarbleGameController.updateValues();
     }
 
     public void IsDefeated() {
@@ -36,15 +34,4 @@ public abstract class Person : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
