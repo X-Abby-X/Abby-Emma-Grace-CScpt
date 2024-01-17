@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using static UnityEditor.Progress;
 
 public class MarbleGameController : MonoBehaviour
 {
@@ -31,6 +32,9 @@ public class MarbleGameController : MonoBehaviour
 
     // Marbles
     public List<GameObject> MarbleList = new List<GameObject>();
+
+    private bool randomColour = true;
+    private int _colourType = 0;
 
     // Game control
     public bool GameStart = false;
@@ -126,8 +130,67 @@ public class MarbleGameController : MonoBehaviour
         GameSequence();
     }
 
+    void ApplyMarbleColourPowerUp()
+    {
+        Debug.Log("ApplyPowerUp method start");
+        foreach (KeyValuePair<Item, int> kvp in player.SortedBackpack)
+        {
+            if (kvp.Key is MarbleItems)
+            {
+                Debug.Log("found MarbleItems");
+                MarbleItems powerup = (MarbleItems)kvp.Key;
+                if (powerup.Type == "colour")
+                {
+                    if (kvp.Value >= 1)
+                    {
+                        Debug.Log("found colour");
+                        _colourType = powerup.ColourValue;
+                        player.SortedInventory[kvp.Key] -= 1;
+                        Debug.Log(kvp.Value);
+                        randomColour = false;
+                    }
+
+                    if (kvp.Value <= 1)
+                    {
+                        player.Inventory.Remove(kvp.Key);
+                        player.SortedInventory.Remove(kvp.Key);
+                        player.SortItemList(player.Inventory, player.SortedInventory);
+
+                    }
+                    break;
+                }
+            }
+
+        }
+    }
+
     void SpawnEnemy(int level)
     {
+        Debug.Log("ApplyPowerUp method start");
+        foreach (KeyValuePair<Item, int> kvp in player.SortedBackpack)
+        {
+            if (kvp.Key is OtherItems)
+            {
+                Debug.Log("found OtherItems");
+                OtherItems powerup = (OtherItems)kvp.Key;
+                if (powerup.Type == "attack")
+                {
+                    if (kvp.Value >= 1)
+                    {
+                        _enemyNum -= 1;
+                        player.SortedInventory[kvp.Key] -= 1;
+                    }
+
+                    if (kvp.Value <= 1)
+                    {
+                        player.Inventory.Remove(kvp.Key);
+                        player.SortedInventory.Remove(kvp.Key);
+                        player.SortItemList(player.Inventory, player.SortedInventory);
+                    }
+                }
+            }
+        }
+
         for (int i = 0; i < _enemyNum; i++)
         {
             int _type = Random.Range(1, 4);
