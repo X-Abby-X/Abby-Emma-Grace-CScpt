@@ -47,6 +47,7 @@ public class Ball : MonoBehaviour
             Lr.SetPosition(0, transform.position);
             Lr.SetPosition(1, MousePosition);
         }
+
         if (Input.GetMouseButtonUp(0))
         {
             BallPosition = BallObject.transform.position;
@@ -54,29 +55,31 @@ public class Ball : MonoBehaviour
             _drag = true;
         }
 
-        void DragRelease(Vector2 InitMousepos, Vector2 Mousepos, Vector2 BallPos)
+        
+
+    }
+
+    void DragRelease(Vector2 InitMousepos, Vector2 Mousepos, Vector2 BallPos)
+    {
+        Vector2 Direction = BallPos - Mousepos;
+
+        _distance = (float)Math.Sqrt(Math.Pow((Mousepos.x - InitMousepos.x), 2.00f) + Math.Pow((Mousepos.y - InitMousepos.y), 2.00f));
+
+        BallObject.AddForce(Direction * (_distance * _powerFactor), ForceMode2D.Impulse);
+
+        Lr.positionCount = 0;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Marble")
         {
-            Vector2 Direction = BallPos - Mousepos;
-
-            _distance = (float)Math.Sqrt(Math.Pow((Mousepos.x - InitMousepos.x), 2.00f) + Math.Pow((Mousepos.y - InitMousepos.y), 2.00f));
-
-            BallObject.AddForce(Direction * (_distance * _powerFactor), ForceMode2D.Impulse);
-
-            Lr.positionCount = 0;
+            _hitMarble.Add(collision.gameObject);
+            collision.gameObject.transform.position = new Vector3(UnityEngine.Random.Range(-0.96f, -1.13f), -1.15f, 0);
+            Rigidbody2D rb = collision.gameObject.AddComponent<Rigidbody2D>();
+            collision.gameObject.GetComponent<Rigidbody2D>().mass = 0;
+            collision.gameObject.GetComponent<Collider2D>().isTrigger = false;
+            _hit = true;
         }
-
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            if (collision.tag == "Marble")
-            {
-                _hitMarble.Add(collision.gameObject);
-                collision.gameObject.transform.position = new Vector3(UnityEngine.Random.Range(-0.96f, -1.13f), -1.15f, 0);
-                Rigidbody2D rb = collision.gameObject.AddComponent<Rigidbody2D>();
-                collision.gameObject.GetComponent<Rigidbody2D>().mass = 0;
-                collision.gameObject.GetComponent<Collider2D>().isTrigger = false;
-                _hit = true;
-            }
-        }
-
     }
 }
