@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class ResultScreen : MonoBehaviour
 {
+
     public GameObject canvas;
     public TMP_Text text;
     public GameObject player;
