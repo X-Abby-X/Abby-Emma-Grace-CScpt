@@ -48,7 +48,7 @@ public class InventoryController : MonoBehaviour
     void InventorytoButton()
     {
         _counter = 0;
-        foreach (KeyValuePair<Items, int> kvp in player.SortedInventory)
+        foreach (KeyValuePair<Item, int> kvp in player.SortedInventory)
         {
             SpawnButton(_buttonX[_counter], _buttonY[_counter], $"{kvp.Key.Name} X {kvp.Value}");
             _counter++;
