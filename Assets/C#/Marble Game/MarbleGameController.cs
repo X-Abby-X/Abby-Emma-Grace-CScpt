@@ -31,17 +31,20 @@ public class MarbleGameController : MonoBehaviour
     public List<TMP_Text> TextList = new List<TMP_Text>();
 
     // Marbles
+    public GameObject Marbleprefab;
     public List<GameObject> MarbleList = new List<GameObject>();
-
+    private float _marbleX;
+    private float _marbleY;
+    private int _marbleNum = 10;
     private bool randomColour = true;
     private int _colourType = 0;
 
     // Game control
     public bool GameStart = false;
     public int level = 0;
-    public bool Win;
-    public int xpEarned = 0;
-    public int MoneyEarned = 0;
+    public static bool Win;
+    public static int xpEarned = 0;
+    public static int MoneyEarned = 0;
     public Player player;
 
     private void Awake()
@@ -312,6 +315,20 @@ public class MarbleGameController : MonoBehaviour
     {
         float _localScale = 0.08f;
         float _radius = 1.1f;
+
+        foreach (KeyValuePair<Item, int> kvp in player.SortedBackpack)
+        {
+            if (kvp.Key is MarbleItems)
+            {
+                MarbleItems powerup = (MarbleItems)kvp.Key;
+                if (powerup.Type == "size")
+                {
+                    _localScale = powerup.Ability(_localScale);
+                    _radius = 3.14f;
+                }
+
+            }
+        }
 
         for (int i = 0; i < _marbleNum; i++)
         {
