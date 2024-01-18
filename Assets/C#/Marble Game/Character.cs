@@ -50,6 +50,29 @@ public class Character : Person
         }
     }
 
+    public int DamageCalculation(Dictionary<string, List<GameObject>> SortedMarble)
+    {
+        int totalMarbleValue = 0;
+        foreach (KeyValuePair<string, List<GameObject>> kvp in SortedMarble)
+        {
+            if (this.Colour == kvp.Key)
+            {
+                foreach (GameObject marble in kvp.Value)
+                {
+                    totalMarbleValue += marble.GetComponent<Marble>()._value * 2;
+                }
+            }
+            else
+            {
+                foreach (GameObject marble in kvp.Value)
+                {
+                    totalMarbleValue += marble.GetComponent<Marble>()._value;
+                }
+            }
+        }
+        return totalMarbleValue;
+    }
+
     public override void Attack()
     {
         int finalDamage = 0;
