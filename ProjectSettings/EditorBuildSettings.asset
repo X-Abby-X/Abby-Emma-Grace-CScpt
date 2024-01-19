@@ -23,4 +23,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Prep.unity
     guid: 38df7fc80dddc4508b9c758cdf798196
+  - enabled: 1
+    path: Assets/Scenes/Save Files.unity
+    guid: 116c559c17bf941859948f88ccc26dd8
+  - enabled: 1
+    path: Assets/Scenes/Inventory.unity
+    guid: 5dd013e346cff42a789ca1a3a4c3ef38
   m_configObjects: {}

@@ -17,8 +17,6 @@ public class InventoryController : MonoBehaviour
     //{
 
     //}
-
-    public TextMeshProUGUI ButtonText;
     public Canvas canvas;
     public Button buttonprefab;
     private float[] _buttonX = { -5.9f, 0, 5.9f, -5.9f, 0, 5.9f, -5.9f, 0, 5.9f };
