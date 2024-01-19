@@ -51,7 +51,8 @@ public class StoreController : MonoBehaviour
             Button newButton = (Button)Instantiate(buttonprefab, new Vector3(_buttonX[i], _buttonY[i], 0), Quaternion.identity);
             newButton.transform.SetParent(canvas.transform);
             ButtonList.Add(newButton);
-            newButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = $"Buy";
+            SceneController.StoreButtonActiveList.Add(true);
+            newButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = $"Buy, ${StoreInventory[i].Cost}";
         }
 
         for (int i = 0; i < ButtonList.Count; i++)
@@ -70,12 +71,12 @@ public class StoreController : MonoBehaviour
 
     void CreateStoreInventory()
     {
-        StatsItems attack_power_up = new StatsItems(1, "strength", "Attack Power Up", 1);
-        StatsItems Hp_power_up = new StatsItems(1, "hp", "Hp Power Up", 1);
-        MarbleItems MarbleSize = new MarbleItems(1, "size", "Marble Size Up", 1, "red");
-        MarbleItems MarbleColour = new MarbleItems(1, "colour", "Change All Marble to colour...", 1, "red");
-        OtherItems KillEnemy = new OtherItems(1, "attack", "Kill An Enemy", 1);
-        OtherItems MaxHealth = new OtherItems(1, "Hp", "MaxHealth", 1);
+        StatsItems attack_power_up = new StatsItems(1, "strength", "Attack Power Up", 0);
+        StatsItems Hp_power_up = new StatsItems(1, "hp", "Hp Power Up", 0);
+        MarbleItems MarbleSize = new MarbleItems(1, "size", "Marble Size Up", 0, "red");
+        MarbleItems MarbleColour = new MarbleItems(1, "colour", "Change All Marble to colour...", 0, "red");
+        OtherItems KillEnemy = new OtherItems(1, "attack", "Kill An Enemy", 0);
+        OtherItems MaxHealth = new OtherItems(1, "Hp", "MaxHealth", 0);
 
         StoreInventory.Add(attack_power_up);
         StoreInventory.Add(Hp_power_up);

@@ -10,7 +10,7 @@ public class MapController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SceneController = GameObject.FindWithTag("SceneController").GetComponent<SceneController>();
+        SceneController = GameObject.FindWithTag("Scene Controller").GetComponent<SceneController>();
         Player = GameObject.FindWithTag("Player").GetComponent<Player>();
 
     }

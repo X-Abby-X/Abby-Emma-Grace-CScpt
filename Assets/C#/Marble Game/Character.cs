@@ -164,7 +164,7 @@ public class Character : Person
 
                         player.Backpack.Remove(kvp.Key);
                         player.SortedBackpack.Remove(kvp.Key);
-                        player.SortItemList(player.Inventory, player.SortedBackpack);
+                        player.SortItemList(player.Backpack, player.SortedBackpack);
                     }
                     break;
                 }

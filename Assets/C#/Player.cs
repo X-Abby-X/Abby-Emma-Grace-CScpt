@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     public int Xp;
     public int Level;
     public SceneController SceneController;
-    public MarbleGameController MarbleGameController;
+    //public MarbleGameController MarbleGameController;
     public List<Item> Inventory = new List<Item>();
     public Dictionary<Item, int> SortedInventory = new Dictionary<Item, int>();
 

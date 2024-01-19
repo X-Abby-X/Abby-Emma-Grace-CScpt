@@ -14,8 +14,9 @@ public class MarbleGameController : MonoBehaviour
     private float[] _enemyX = { -7.03f, -4.46f, -2.15f };
     private float _enemyY = 2.9f;
     private int _enemyTotalHp;
-    public List<GameObject> EnemyList = new List<GameObject>();
     public GameObject Enemyprefab;
+    public List<GameObject> EnemyList = new List<GameObject>();
+    
     public Dictionary<string, List<GameObject>> ColourEnemylist = new Dictionary<string, List<GameObject>>();
 
     // Character
@@ -41,11 +42,13 @@ public class MarbleGameController : MonoBehaviour
 
     // Game control
     public bool GameStart = false;
-    public int level = 0;
+    public static int level = 0;
     public static bool Win;
     public static int xpEarned = 0;
     public static int MoneyEarned = 0;
     public Player player;
+    public static bool GamePause = false;
+
 
     private void Awake()
     {
@@ -106,6 +109,7 @@ public class MarbleGameController : MonoBehaviour
             }
             player.Xp += xpEarned;
             player.Money += MoneyEarned;
+            player.Save();
             player.levelUp();
         }
         else
@@ -169,6 +173,65 @@ public class MarbleGameController : MonoBehaviour
                 }
             }
 
+        }
+    }
+
+    void SpawnMarble()
+    {
+        float _localScale = 0.08f;
+        float _radius = 1.1f;
+
+        foreach (KeyValuePair<Item, int> kvp in player.SortedBackpack)
+        {
+            if (kvp.Key is MarbleItems)
+            {
+                MarbleItems powerup = (MarbleItems)kvp.Key;
+                if (powerup.Type == "size")
+                {
+                    Debug.Log("found size");
+                    _localScale = powerup.Ability(_localScale);
+                    _radius = 3.14f;
+                }
+
+            }
+        }
+
+        for (int i = 0; i < _marbleNum; i++)
+        {
+            if (randomColour)
+            {
+                _colourType = Random.Range(1, 4);
+            }
+
+            _marbleX = Random.Range(0.4f, 8);
+            _marbleY = Random.Range(-4, 4);
+
+            GameObject newMarble = (GameObject)Instantiate(Marbleprefab, new Vector3(_marbleX, _marbleY, 0), Quaternion.identity);
+            newMarble.transform.localScale = new Vector3(_localScale, _localScale, _localScale);
+            newMarble.GetComponent<CircleCollider2D>().radius = _radius;
+
+
+
+            newMarble.GetComponent<Marble>()._value = 1;
+
+            if (_colourType == 1)
+            {
+                newMarble.GetComponent<Marble>().Colour = "Red";
+                newMarble.GetComponent<SpriteRenderer>().sprite = newMarble.GetComponent<Marble>().spriteArray[0];
+            }
+            else if (_colourType == 2)
+            {
+
+                newMarble.GetComponent<Marble>().Colour = "Yellow";
+                newMarble.GetComponent<SpriteRenderer>().sprite = newMarble.GetComponent<Marble>().spriteArray[1];
+            }
+            else
+            {
+                newMarble.GetComponent<Marble>().Colour = "Blue";
+                newMarble.GetComponent<SpriteRenderer>().sprite = newMarble.GetComponent<Marble>().spriteArray[2];
+            }
+
+            MarbleList.Add(newMarble);
         }
     }
 
@@ -308,64 +371,6 @@ public class MarbleGameController : MonoBehaviour
             {
                 break;
             }
-        }
-    }
-
-    void SpawnMarble()
-    {
-        float _localScale = 0.08f;
-        float _radius = 1.1f;
-
-        foreach (KeyValuePair<Item, int> kvp in player.SortedBackpack)
-        {
-            if (kvp.Key is MarbleItems)
-            {
-                MarbleItems powerup = (MarbleItems)kvp.Key;
-                if (powerup.Type == "size")
-                {
-                    _localScale = powerup.Ability(_localScale);
-                    _radius = 3.14f;
-                }
-
-            }
-        }
-
-        for (int i = 0; i < _marbleNum; i++)
-        {
-            if (randomColour)
-            {
-                _colourType = Random.Range(1, 4);
-            }
-
-            _marbleX = Random.Range(0.4f, 8);
-            _marbleY = Random.Range(-4, 4);
-
-            GameObject newMarble = (GameObject)Instantiate(Marbleprefab, new Vector3(_marbleX, _marbleY, 0), Quaternion.identity);
-            newMarble.transform.localScale = new Vector3(_localScale, _localScale, _localScale);
-            newMarble.GetComponent<CircleCollider2D>().radius = _radius;
-
-
-
-            newMarble.GetComponent<Marble>()._value = 1;
-
-            if (_colourType == 1)
-            {
-                newMarble.GetComponent<Marble>().Colour = "Red";
-                newMarble.GetComponent<SpriteRenderer>().sprite = newMarble.GetComponent<Marble>().spriteArray[0];
-            }
-            else if (_colourType == 2)
-            {
-
-                newMarble.GetComponent<Marble>().Colour = "Yellow";
-                newMarble.GetComponent<SpriteRenderer>().sprite = newMarble.GetComponent<Marble>().spriteArray[1];
-            }
-            else
-            {
-                newMarble.GetComponent<Marble>().Colour = "Blue";
-                newMarble.GetComponent<SpriteRenderer>().sprite = newMarble.GetComponent<Marble>().spriteArray[2];
-            }
-
-            MarbleList.Add(newMarble);
         }
     }
 
