@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class SceneController : MonoBehaviour
 {
 
+    public AudioSource MusicSource;
+    public AudioClip BackGroundMusic;
     public Vector2 PlayerOnMapPosition;
     public List<bool> StoreButtonActiveList = new List<bool>();
     public Player Player;
@@ -26,7 +28,8 @@ public class SceneController : MonoBehaviour
         }
 
         DontDestroyOnLoad(this.gameObject);
-
+        MusicSource.clip = BackGroundMusic;
+        MusicSource.Play();
     }
 
     void Update()
