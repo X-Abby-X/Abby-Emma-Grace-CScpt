@@ -25,7 +25,7 @@ public class Ball : MonoBehaviour
 
     void Update()
     {
-        if (MarbleGameController.GameStart)
+        if (MarbleGameController.GameStart && MarbleGameController.GamePaused == false)
         {
             if (_drag == false)
             {

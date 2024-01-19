@@ -41,22 +41,51 @@ public class MarbleGameController : MonoBehaviour
     private int _colourType = 0;
 
     // Game control
+    public Player player;
+    public GameObject pauseMenu;
     public bool GameStart = false;
     public static int level = 0;
     public static bool Win;
     public static int xpEarned = 0;
     public static int MoneyEarned = 0;
-    public Player player;
-    public static bool GamePause = false;
-
-
+    public static bool GamePaused = false;
+    
     private void Awake()
     {
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        
+
     }
+
+    public void Resume()
+    {
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1f;
+        GamePaused = false;
+    }
+
+    public void Quit()
+    {
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1f;
+        GamePaused = false;
+        Win = false;
+        GameStart = false;
+        player.GetStats();
+        SceneManager.LoadScene("Result");
+    }
+
+    public void Pause()
+    {
+        pauseMenu.SetActive(true);
+        Time.timeScale = 0f;
+        GamePaused = true;
+    }
+
 
     IEnumerator Start()
     {
+        pauseMenu.SetActive(false);
         SpawnCharacter();
         SpawnEnemy(level);
         SortEnemy(EnemyList);
@@ -65,6 +94,14 @@ public class MarbleGameController : MonoBehaviour
 
         GameSequence();
         yield return new WaitForSeconds(0f);
+    }
+
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            Pause();
+        }
     }
 
     void GameSequence()

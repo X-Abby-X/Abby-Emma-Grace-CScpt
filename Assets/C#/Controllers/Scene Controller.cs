@@ -57,9 +57,11 @@ public class SceneController : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.Return))
             {
-                SceneManager.LoadScene("Store");
+                ToStore();
             }
         }
+
+
     }
 
     public void ToSaveFile()
@@ -68,6 +70,11 @@ public class SceneController : MonoBehaviour
     }
 
     public void ToWorldMap()
+    {
+        SceneManager.LoadScene("World Map");
+    }
+
+    public void ToStore()
     {
         SceneManager.LoadScene("World Map");
     }
