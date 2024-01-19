@@ -10,6 +10,7 @@ TagManager:
   - Fighthouse3
   - Store
   - Scene Controller
+  - Audio Controller
   layers:
   - Default
   - TransparentFX
