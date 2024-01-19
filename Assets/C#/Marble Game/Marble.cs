@@ -5,6 +5,6 @@ using UnityEngine;
 public class Marble : MonoBehaviour
 {
     public string Colour;
-    public int _value;
-    public Sprite[] spriteArray;
+    public int Value;
+    public Sprite[] SpriteArray;
 }

@@ -8,8 +8,8 @@ using static UnityEditor.Progress;
 public class Character : Person
 {
     public int MaxHealth;
-    public Player player;
-    public Ball ball;
+    public Player Player;
+    public Ball Ball;
     private bool _bonus = false;
     public bool _applied = false;
 
@@ -20,7 +20,7 @@ public class Character : Person
 
     void Awake()
     {
-        player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        Player = GameObject.FindWithTag("Player").GetComponent<Player>();
     }
 
     void Start()
@@ -30,7 +30,7 @@ public class Character : Person
 
     void ApplyPowerUp()
     {
-        foreach (Item item in player.SortedBackpack.Keys)
+        foreach (Item item in Player.SortedBackpack.Keys)
         {
             if (item is StatsItems)
             {
@@ -44,13 +44,13 @@ public class Character : Person
                 {
                     this.Health = powerup.Ability(this.Health);
                     MaxHealth = this.Health;
-                    MarbleGameController.updateValues();
+                    MarbleGameController.UpdateValues();
                 }
             }
         }
     }
 
-    public int DamageCalculation(Dictionary<string, List<GameObject>> SortedMarble)
+    public int CalculateDamage(Dictionary<string, List<GameObject>> SortedMarble)
     {
         int totalMarbleValue = 0;
         foreach (KeyValuePair<string, List<GameObject>> kvp in SortedMarble)
@@ -59,14 +59,14 @@ public class Character : Person
             {
                 foreach (GameObject marble in kvp.Value)
                 {
-                    totalMarbleValue += marble.GetComponent<Marble>()._value * 2;
+                    totalMarbleValue += marble.GetComponent<Marble>().Value * 2;
                 }
             }
             else
             {
                 foreach (GameObject marble in kvp.Value)
                 {
-                    totalMarbleValue += marble.GetComponent<Marble>()._value;
+                    totalMarbleValue += marble.GetComponent<Marble>().Value;
                 }
             }
         }
@@ -80,12 +80,12 @@ public class Character : Person
         Debug.Log($"character colour : {this.Colour} target enemy colour : {targetEnemy.GetComponent<Enemy>().Colour} targetEnemy health : {targetEnemy.GetComponent<Enemy>().Health}");
         if (_bonus)
         {
-            finalDamage = (DamageCalculation(ball.SortedMarble) + this.Strength) * base.ColourBonus;
+            finalDamage = (CalculateDamage(Ball.SortedMarble) + this.Strength) * base.ColourBonus;
         }
         else
         {
 
-            finalDamage = DamageCalculation(ball.SortedMarble) + this.Strength;
+            finalDamage = CalculateDamage(Ball.SortedMarble) + this.Strength;
         }
 
         targetEnemy.GetComponent<Enemy>().TakeDamage(finalDamage);
@@ -96,7 +96,6 @@ public class Character : Person
     {
         foreach (KeyValuePair<string, List<GameObject>> kvp in ColourEnemylist)
         {
-            //Debug.Log($"character colour  {this.Colour}, enemy colour {kvp.Key}");
             if (this.Colour == "Red" && kvp.Key == "Yellow")
             {
                 _bonus = true;
@@ -133,13 +132,13 @@ public class Character : Person
             }
         }
         _applied = false;
-        MarbleGameController.updateValues();
+        MarbleGameController.UpdateValues();
     }
 
     void ApplyHealthPowerUp()
     {
         Debug.Log("ApplyPowerUp method start");
-        foreach (KeyValuePair<Item, int> kvp in player.SortedBackpack)
+        foreach (KeyValuePair<Item, int> kvp in Player.SortedBackpack)
         {
             if (kvp.Key is OtherItems)
             {
@@ -153,24 +152,24 @@ public class Character : Person
                         Debug.Log(this.MaxHealth);
                         this.Health = this.MaxHealth;
                         _applied = true;
-                        player.SortedInventory[kvp.Key] -= 1;
+                        Player.SortedInventory[kvp.Key] -= 1;
                     }
 
                     if (kvp.Value <= 1)
                     {
-                        player.Inventory.Remove(kvp.Key);
-                        player.SortedInventory.Remove(kvp.Key);
-                        player.SortItemList(player.Inventory, player.SortedInventory);
+                        Player.Inventory.Remove(kvp.Key);
+                        Player.SortedInventory.Remove(kvp.Key);
+                        Player.SortItemList(Player.Inventory, Player.SortedInventory);
 
-                        player.Backpack.Remove(kvp.Key);
-                        player.SortedBackpack.Remove(kvp.Key);
-                        player.SortItemList(player.Backpack, player.SortedBackpack);
+                        Player.Backpack.Remove(kvp.Key);
+                        Player.SortedBackpack.Remove(kvp.Key);
+                        Player.SortItemList(Player.Backpack, Player.SortedBackpack);
                     }
                     break;
                 }
             }
         }
 
-        MarbleGameController.updateValues();
+        MarbleGameController.UpdateValues();
     }
 }

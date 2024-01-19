@@ -8,10 +8,9 @@ using static UnityEditor.Progress;
 public class Player : MonoBehaviour
 {
     public int Money;
-    public int Xp;
+    public int XP;
     public int Level;
     public SceneController SceneController;
-    //public MarbleGameController MarbleGameController;
     public List<Item> Inventory = new List<Item>();
     public Dictionary<Item, int> SortedInventory = new Dictionary<Item, int>();
 
@@ -32,7 +31,7 @@ public class Player : MonoBehaviour
 
         public Stats(int id, int money, int xp, int level, List<Item> inventory, List<bool> storeButtonActiveList)
         {
-            Debug.Log("make save file");
+            Debug.Log("Make Save File");
             this._id = id;
             this._money = money;
             this._xp = xp;
@@ -43,7 +42,7 @@ public class Player : MonoBehaviour
 
         public void GetStats()
         {
-            Debug.Log("print save file");
+            Debug.Log("Print Save File");
             Debug.Log(this._id);
             Debug.Log(this._money);
             Debug.Log(this._xp);
@@ -58,10 +57,10 @@ public class Player : MonoBehaviour
 
     public void Save()
     {
-        Debug.Log("save");
+        Debug.Log("Save");
         List<Item> InventoryCopy = new List<Item>(Inventory);
         List<bool> ButtonActivateCopy = new List<bool>(SceneController.StoreButtonActiveList);
-        Stats newSaveFile = new Stats(SaveFiles.Count + 1, this.Money, this.Xp, this.Level, InventoryCopy, ButtonActivateCopy);
+        Stats newSaveFile = new Stats(SaveFiles.Count + 1, this.Money, this.XP, this.Level, InventoryCopy, ButtonActivateCopy);
         SaveFiles.Add(newSaveFile);
         if (SaveFiles.Count >= 5)
         {
@@ -74,7 +73,7 @@ public class Player : MonoBehaviour
     public void LoadSaveFile(Stats stats)
     {
         this.Money = stats._money;
-        this.Xp = stats._xp;
+        this.XP = stats._xp;
         this.Level = stats._level;
         this.Inventory.Clear();
         this.Inventory.AddRange(stats._inventory);
@@ -88,7 +87,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.gameObject.transform.position = SceneController.playerOnMapPosition;
+        this.gameObject.transform.position = SceneController.PlayerOnMapPosition;
         GameObject[] objects = GameObject.FindGameObjectsWithTag("Player");
 
         if (objects.Length > 1)
@@ -101,19 +100,19 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Playermovement();
+        PlayerMovement();
     }
 
     public void levelUp()
     {
-        this.Level = (this.Xp - this.Level * 10) / 10;
+        this.Level = (this.XP - this.Level * 10) / 10;
     }
 
 
     public void GetStats()
     {
         Debug.Log(this.Money);
-        Debug.Log(this.Xp);
+        Debug.Log(this.XP);
         Debug.Log(this.Level);
 
         foreach (Item item in Inventory)
@@ -127,7 +126,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void Playermovement()
+    void PlayerMovement()
     {
         if (SceneManager.GetActiveScene().name == "World Map")
         {
@@ -135,18 +134,17 @@ public class Player : MonoBehaviour
             float v = Input.GetAxis("Vertical");
             float h = Input.GetAxis("Horizontal");
 
-            Vector2 pos = SceneController.playerOnMapPosition;
+            Vector2 pos = SceneController.PlayerOnMapPosition;
 
             pos.y += v * 3 * Time.deltaTime;
             pos.x += h * 3 * Time.deltaTime;
 
             transform.position = pos;
 
-            SceneController.playerOnMapPosition = transform.position;
+            SceneController.PlayerOnMapPosition = transform.position;
         }
         else
         {
-            // put it out of scene
             this.gameObject.transform.position = new Vector3(1.5f, 7f, 0);
         }
 
@@ -165,15 +163,15 @@ public class Player : MonoBehaviour
             {
                 if (collision.tag == "Fighthouse1")
                 {
-                    MarbleGameController.level = 1;
+                    MarbleGameController.Level = 1;
                 }
                 else if (collision.tag == "Fighthouse2")
                 {
-                    MarbleGameController.level = 2;
+                    MarbleGameController.Level = 2;
                 }
                 else if (collision.tag == "Fighthouse3")
                 {
-                    MarbleGameController.level = 3;
+                    MarbleGameController.Level = 3;
                 }
                 SceneManager.LoadScene("Prep");
             }
@@ -183,7 +181,6 @@ public class Player : MonoBehaviour
 
     }
 
-    // pigeon sort
     public void SortItemList(List<Item> list, Dictionary<Item, int> Dictionary)
     {
         Dictionary.Clear();
@@ -198,7 +195,7 @@ public class Player : MonoBehaviour
             else
             {
                 Dictionary.Add(items, 1);
-                Debug.Log("new");
+                Debug.Log("New");
             }
         }
     }

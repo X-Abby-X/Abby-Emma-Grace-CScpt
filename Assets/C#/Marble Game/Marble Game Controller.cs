@@ -13,7 +13,7 @@ public class MarbleGameController : MonoBehaviour
     private int _enemyNum = 3;
     private float[] _enemyX = { -7.03f, -4.46f, -2.15f };
     private float _enemyY = 2.9f;
-    private int _enemyTotalHp;
+    private int _enemyTotalHP;
     public GameObject Enemyprefab;
     public List<GameObject> EnemyList = new List<GameObject>();
     
@@ -22,17 +22,17 @@ public class MarbleGameController : MonoBehaviour
     // Character
     private float _characterX = -7.84f;
     private float _characterY = -1.73f;
-    public int CharaterTotalHp;
-    public GameObject Characterprefeb;
+    public int CharaterTotalHP;
+    public GameObject CharacterPrefeb;
     public List<GameObject> CharacterList = new List<GameObject>();
 
     // Text box
-    public GameObject canvas;
-    public TMP_Text text;
+    public GameObject Canvas;
+    public TMP_Text Text;
     public List<TMP_Text> TextList = new List<TMP_Text>();
 
     // Marbles
-    public GameObject Marbleprefab;
+    public GameObject MarblePrefab;
     public List<GameObject> MarbleList = new List<GameObject>();
     private float _marbleX;
     private float _marbleY;
@@ -41,43 +41,41 @@ public class MarbleGameController : MonoBehaviour
     private int _colourType = 0;
 
     // Game control
-    public Player player;
-    public GameObject pauseMenu;
+    public Player Player;
+    public GameObject PauseMenu;
     public bool GameStart = false;
-    public static int level = 0;
+    public static int Level = 0;
     public static bool Win;
-    public static int xpEarned = 0;
+    public static int XPEarned = 0;
     public static int MoneyEarned = 0;
     public static bool GamePaused = false;
     
     private void Awake()
     {
-        player = GameObject.FindWithTag("Player").GetComponent<Player>();
-        
-
+        Player = GameObject.FindWithTag("Player").GetComponent<Player>();
     }
 
     public void Resume()
     {
-        pauseMenu.SetActive(false);
+        PauseMenu.SetActive(false);
         Time.timeScale = 1f;
         GamePaused = false;
     }
 
     public void Quit()
     {
-        pauseMenu.SetActive(false);
+        PauseMenu.SetActive(false);
         Time.timeScale = 1f;
         GamePaused = false;
         Win = false;
         GameStart = false;
-        player.GetStats();
+        Player.GetStats();
         SceneManager.LoadScene("Result");
     }
 
     public void Pause()
     {
-        pauseMenu.SetActive(true);
+        PauseMenu.SetActive(true);
         Time.timeScale = 0f;
         GamePaused = true;
     }
@@ -85,11 +83,11 @@ public class MarbleGameController : MonoBehaviour
 
     IEnumerator Start()
     {
-        pauseMenu.SetActive(false);
+        PauseMenu.SetActive(false);
         SpawnCharacter();
-        SpawnEnemy(level);
+        SpawnEnemy(Level);
         SortEnemy(EnemyList);
-        updateValues();
+        UpdateValues();
         ApplyMarbleColourPowerUp();
 
         GameSequence();
@@ -122,12 +120,12 @@ public class MarbleGameController : MonoBehaviour
 
         MarbleList.Clear();
         SpawnMarble();
-        CharacterList[0].GetComponent<Character>().Strength = player.Level;
+        CharacterList[0].GetComponent<Character>().Strength = Player.Level;
 
         GameStart = true;
 
 
-        if (CharaterTotalHp == 0 || _enemyTotalHp == 0)
+        if (CharaterTotalHP == 0 || _enemyTotalHP == 0)
         {
             EndGame();
         }
@@ -135,28 +133,28 @@ public class MarbleGameController : MonoBehaviour
 
     void EndGame()
     {
-        if (CharaterTotalHp != 0)
+        if (CharaterTotalHP != 0)
         {
             Win = true;
-            if (level == 1)
+            if (Level == 1)
             {
-                xpEarned = 10;
+                XPEarned = 10;
                 MoneyEarned = 10;
             }
-            else if (level == 2)
+            else if (Level == 2)
             {
-                xpEarned = 25;
+                XPEarned = 25;
                 MoneyEarned = 25;
             }
-            else if (level == 3)
+            else if (Level == 3)
             {
-                xpEarned = 40;
+                XPEarned = 40;
                 MoneyEarned = 50;
             }
-            player.Xp += xpEarned;
-            player.Money += MoneyEarned;
-            player.Save();
-            player.levelUp();
+            Player.XP += XPEarned;
+            Player.Money += MoneyEarned;
+            Player.Save();
+            Player.levelUp();
         }
         else
         {
@@ -164,7 +162,7 @@ public class MarbleGameController : MonoBehaviour
         }
 
         GameStart = false;
-        player.GetStats();
+        Player.GetStats();
         SceneManager.LoadScene("Result");
     }
 
@@ -174,16 +172,16 @@ public class MarbleGameController : MonoBehaviour
         {
             character.GetComponent<Character>().Attack();
         }
-        updateValues();
+        UpdateValues();
         yield return new WaitForSeconds(0.5f);
 
         foreach (GameObject enemy in EnemyList)
         {
             enemy.GetComponent<Enemy>().Attack();
         }
-        updateValues();
+        UpdateValues();
         yield return new WaitForSeconds(0.5f);
-        Debug.Log($"enemy health {_enemyTotalHp}, character health {CharaterTotalHp}");
+        Debug.Log($"enemy health {_enemyTotalHP}, character health {CharaterTotalHP}");
 
         GameSequence();
     }
@@ -191,7 +189,7 @@ public class MarbleGameController : MonoBehaviour
     void ApplyMarbleColourPowerUp()
     {
         Debug.Log("ApplyPowerUp method start");
-        foreach (KeyValuePair<Item, int> kvp in player.SortedBackpack)
+        foreach (KeyValuePair<Item, int> kvp in Player.SortedBackpack)
         {
             if (kvp.Key is MarbleItems)
             {
@@ -203,16 +201,16 @@ public class MarbleGameController : MonoBehaviour
                     {
                         Debug.Log("found colour");
                         _colourType = powerup.ColourValue;
-                        player.SortedInventory[kvp.Key] -= 1;
+                        Player.SortedInventory[kvp.Key] -= 1;
                         Debug.Log(kvp.Value);
                         randomColour = false;
                     }
 
                     if (kvp.Value <= 1)
                     {
-                        player.Inventory.Remove(kvp.Key);
-                        player.SortedInventory.Remove(kvp.Key);
-                        player.SortItemList(player.Inventory, player.SortedInventory);
+                        Player.Inventory.Remove(kvp.Key);
+                        Player.SortedInventory.Remove(kvp.Key);
+                        Player.SortItemList(Player.Inventory, Player.SortedInventory);
 
                     }
                     break;
@@ -227,7 +225,7 @@ public class MarbleGameController : MonoBehaviour
         float _localScale = 0.08f;
         float _radius = 1.1f;
 
-        foreach (KeyValuePair<Item, int> kvp in player.SortedBackpack)
+        foreach (KeyValuePair<Item, int> kvp in Player.SortedBackpack)
         {
             if (kvp.Key is MarbleItems)
             {
@@ -252,29 +250,29 @@ public class MarbleGameController : MonoBehaviour
             _marbleX = Random.Range(0.4f, 8);
             _marbleY = Random.Range(-4, 4);
 
-            GameObject newMarble = (GameObject)Instantiate(Marbleprefab, new Vector3(_marbleX, _marbleY, 0), Quaternion.identity);
+            GameObject newMarble = (GameObject)Instantiate(MarblePrefab, new Vector3(_marbleX, _marbleY, 0), Quaternion.identity);
             newMarble.transform.localScale = new Vector3(_localScale, _localScale, _localScale);
             newMarble.GetComponent<CircleCollider2D>().radius = _radius;
 
 
 
-            newMarble.GetComponent<Marble>()._value = 1;
+            newMarble.GetComponent<Marble>().Value = 1;
 
             if (_colourType == 1)
             {
                 newMarble.GetComponent<Marble>().Colour = "Red";
-                newMarble.GetComponent<SpriteRenderer>().sprite = newMarble.GetComponent<Marble>().spriteArray[0];
+                newMarble.GetComponent<SpriteRenderer>().sprite = newMarble.GetComponent<Marble>().SpriteArray[0];
             }
             else if (_colourType == 2)
             {
 
                 newMarble.GetComponent<Marble>().Colour = "Yellow";
-                newMarble.GetComponent<SpriteRenderer>().sprite = newMarble.GetComponent<Marble>().spriteArray[1];
+                newMarble.GetComponent<SpriteRenderer>().sprite = newMarble.GetComponent<Marble>().SpriteArray[1];
             }
             else
             {
                 newMarble.GetComponent<Marble>().Colour = "Blue";
-                newMarble.GetComponent<SpriteRenderer>().sprite = newMarble.GetComponent<Marble>().spriteArray[2];
+                newMarble.GetComponent<SpriteRenderer>().sprite = newMarble.GetComponent<Marble>().SpriteArray[2];
             }
 
             MarbleList.Add(newMarble);
@@ -284,7 +282,7 @@ public class MarbleGameController : MonoBehaviour
     void SpawnEnemy(int level)
     {
         Debug.Log("ApplyPowerUp method start");
-        foreach (KeyValuePair<Item, int> kvp in player.SortedBackpack)
+        foreach (KeyValuePair<Item, int> kvp in Player.SortedBackpack)
         {
             if (kvp.Key is OtherItems)
             {
@@ -295,14 +293,14 @@ public class MarbleGameController : MonoBehaviour
                     if (kvp.Value >= 1)
                     {
                         _enemyNum -= 1;
-                        player.SortedInventory[kvp.Key] -= 1;
+                        Player.SortedInventory[kvp.Key] -= 1;
                     }
 
                     if (kvp.Value <= 1)
                     {
-                        player.Inventory.Remove(kvp.Key);
-                        player.SortedInventory.Remove(kvp.Key);
-                        player.SortItemList(player.Inventory, player.SortedInventory);
+                        Player.Inventory.Remove(kvp.Key);
+                        Player.SortedInventory.Remove(kvp.Key);
+                        Player.SortItemList(Player.Inventory, Player.SortedInventory);
                     }
                 }
             }
@@ -355,13 +353,13 @@ public class MarbleGameController : MonoBehaviour
 
     void SpawnCharacter()
     {
-        GameObject newCharacter = (GameObject)Instantiate(Characterprefeb, new Vector3(_characterX, _characterY, 0), Quaternion.identity);
+        GameObject newCharacter = (GameObject)Instantiate(CharacterPrefeb, new Vector3(_characterX, _characterY, 0), Quaternion.identity);
 
         newCharacter.GetComponent<Character>().Health = 10;
         newCharacter.GetComponent<Character>().Colour = "Red";
         newCharacter.GetComponent<Character>().ColourBonus = 2;
         newCharacter.GetComponent<Character>().MaxHealth = newCharacter.GetComponent<Character>().Health;
-        SpawnTextBox((_characterX + 2.82f), (_characterY - 2.1f), CharaterTotalHp.ToString());
+        SpawnTextBox((_characterX + 2.82f), (_characterY - 2.1f), CharaterTotalHP.ToString());
         CharacterList.Add(newCharacter);
     }
 
@@ -422,17 +420,17 @@ public class MarbleGameController : MonoBehaviour
 
     void SpawnTextBox(float x, float y, string content)
     {
-        TMP_Text newtext = (TMP_Text)Instantiate(text, new Vector3(x, y, 0), Quaternion.identity);
+        TMP_Text newtext = (TMP_Text)Instantiate(Text, new Vector3(x, y, 0), Quaternion.identity);
         newtext.GetComponent<TMP_Text>().text = content;
-        newtext.transform.SetParent(canvas.transform);
+        newtext.transform.SetParent(Canvas.transform);
         TextList.Add(newtext);
     }
 
-    public void updateValues()
+    public void UpdateValues()
     {
-        CharaterTotalHp = CheckHealth(CharacterList);
-        _enemyTotalHp = CheckHealth(EnemyList);
-        TextList[0].GetComponent<TMP_Text>().text = CharaterTotalHp.ToString();
+        CharaterTotalHP = CheckHealth(CharacterList);
+        _enemyTotalHP = CheckHealth(EnemyList);
+        TextList[0].GetComponent<TMP_Text>().text = CharaterTotalHP.ToString();
 
         for (int i = 0; i < EnemyList.Count; i++)
         {

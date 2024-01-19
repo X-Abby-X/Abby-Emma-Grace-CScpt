@@ -10,12 +10,12 @@ using static UnityEditor.Progress;
 
 public class StoreController : MonoBehaviour
 {
-    public Player player;
+    public Player Player;
     public List<Item> StoreInventory = new List<Item>();
     public SceneController SceneController;
     public TextMeshProUGUI MoneyText;
-    public Canvas canvas;
-    public Button buttonprefab;
+    public Canvas Canvas;
+    public Button ButtonPrefab;
     public List<Button> ButtonList = new List<Button>();
 
     private float[] _buttonX = { -5.75f, 0, 5.96f, -5.75f, 0, 5.96f };
@@ -23,7 +23,7 @@ public class StoreController : MonoBehaviour
 
     void Awake()
     {
-        player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        Player = GameObject.FindWithTag("Player").GetComponent<Player>();
         SceneController = GameObject.FindWithTag("Scene Controller").GetComponent<SceneController>();
         CreateStoreInventory();
         SpawnButton();
@@ -38,18 +38,17 @@ public class StoreController : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
-        MoneyText.text = $"You have ${player.Money}";
+        MoneyText.text = $"You have ${Player.Money}";
     }
 
     void SpawnButton()
     {
         for (int i = 0; i < StoreInventory.Count; i++)
         {
-            Button newButton = (Button)Instantiate(buttonprefab, new Vector3(_buttonX[i], _buttonY[i], 0), Quaternion.identity);
-            newButton.transform.SetParent(canvas.transform);
+            Button newButton = (Button)Instantiate(ButtonPrefab, new Vector3(_buttonX[i], _buttonY[i], 0), Quaternion.identity);
+            newButton.transform.SetParent(Canvas.transform);
             ButtonList.Add(newButton);
             SceneController.StoreButtonActiveList.Add(true);
             newButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = $"Buy, ${StoreInventory[i].Cost}";
@@ -64,7 +63,7 @@ public class StoreController : MonoBehaviour
             }
             else if (i >= 3)
             {
-                ButtonList[i].onClick.AddListener(delegate { MutiplePowerUp(num); });
+                ButtonList[i].onClick.AddListener(delegate { MultiplePowerUp(num); });
             }
         }
     }
@@ -88,17 +87,17 @@ public class StoreController : MonoBehaviour
 
     void Buy(Item item)
     {
-        Debug.Log("stuff bought");
-        player.Money -= item.Cost;
-        Debug.Log(player.Money);
-        player.Inventory.Add(item);
-        player.SortItemList(player.Inventory, player.SortedInventory);
+        Debug.Log("Stuff Bought");
+        Player.Money -= item.Cost;
+        Debug.Log(Player.Money);
+        Player.Inventory.Add(item);
+        Player.SortItemList(Player.Inventory, Player.SortedInventory);
     }
 
     public void OneTimePowerUp(int i)
     {
-        Debug.Log("button pressed");
-        if (player.Money >= StoreInventory[i].Cost)
+        Debug.Log("Button Pressed");
+        if (Player.Money >= StoreInventory[i].Cost)
         {
             Buy(StoreInventory[i]);
             SceneController.StoreButtonActiveList[i] = false;
@@ -106,22 +105,22 @@ public class StoreController : MonoBehaviour
         }
         else
         {
-            Debug.Log("you're broke");
+            Debug.Log("You're Broke");
         }
 
 
     }
 
-    public void MutiplePowerUp(int i)
+    public void MultiplePowerUp(int i)
     {
-        Debug.Log("button pressed");
-        if (player.Money >= StoreInventory[i].Cost)
+        Debug.Log("Button Pressed");
+        if (Player.Money >= StoreInventory[i].Cost)
         {
             Buy(StoreInventory[i]);
         }
         else
         {
-            Debug.Log("you're broke");
+            Debug.Log("You're Broke");
         }
     }
 

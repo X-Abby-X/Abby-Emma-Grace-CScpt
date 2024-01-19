@@ -6,47 +6,29 @@ using UnityEngine.UI;
 
 public class InventoryController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    //void Start()
-    //{
-
-    //}
-
-    // Update is called once per frame
-    //void Update()
-    //{
-
-    //}
-    public Canvas canvas;
-    public Button buttonprefab;
+    public Canvas Canvas;
+    public Button ButtonPrefab;
     private float[] _buttonX = { -5.9f, 0, 5.9f, -5.9f, 0, 5.9f, -5.9f, 0, 5.9f };
     private float[] _buttonY = { 1.5f, 1.5f, 1.5f, 0, 0, 0, -3, -3, -3 };
 
-    public Player player;
+    public Player Player;
     private int _counter;
 
 
     void Awake()
     {
-        player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        Player = GameObject.FindWithTag("Player").GetComponent<Player>();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         InventorytoButton();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     void InventorytoButton()
     {
         _counter = 0;
-        foreach (KeyValuePair<Item, int> kvp in player.SortedInventory)
+        foreach (KeyValuePair<Item, int> kvp in Player.SortedInventory)
         {
             SpawnButton(_buttonX[_counter], _buttonY[_counter], $"{kvp.Key.Name} X {kvp.Value}");
             _counter++;
@@ -55,8 +37,8 @@ public class InventoryController : MonoBehaviour
 
     void SpawnButton(float x, float y, string content)
     {
-        Button newButton = (Button)Instantiate(buttonprefab, new Vector3(x, y, 0), Quaternion.identity);
-        newButton.transform.SetParent(canvas.transform);
+        Button newButton = (Button)Instantiate(ButtonPrefab, new Vector3(x, y, 0), Quaternion.identity);
+        newButton.transform.SetParent(Canvas.transform);
         newButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = content;
     }
 }

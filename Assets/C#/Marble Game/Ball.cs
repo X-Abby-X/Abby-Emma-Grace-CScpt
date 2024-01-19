@@ -10,24 +10,22 @@ public class Ball : MonoBehaviour
     public Rigidbody2D BallObject;
     public LineRenderer Lr;
     private float _distance;
-    public float _powerFactor = 2f;
-    private Vector2 InitialMousePosition;
-    private Vector2 BallPosition;
-    private Vector2 MousePosition;
+    public float PowerFactor = 2f;
+    private Vector2 _initialMousePosition;
+    private Vector2 _ballPosition;
+    private Vector2 _mousePosition;
 
-    public bool _drag = false;
+    public bool Drag = false;
     private bool _hit = false;
 
     private List<GameObject> _hitMarble = new List<GameObject>();
     public Dictionary<string, List<GameObject>> SortedMarble = new Dictionary<string, List<GameObject>>();
 
-    // Update is called once per frame
-
     void Update()
     {
         if (MarbleGameController.GameStart && MarbleGameController.GamePaused == false)
         {
-            if (_drag == false)
+            if (Drag == false)
             {
                 UserInput();
 
@@ -43,10 +41,10 @@ public class Ball : MonoBehaviour
 
     public void BallStop()
     {
-        if (_drag && BallObject.velocity.magnitude < 0.2f)
+        if (Drag && BallObject.velocity.magnitude < 0.2f)
         {
             StartCoroutine(MarbleGameController.AttackGameSequence());
-            _drag = false;
+            Drag = false;
         }
     }
 
@@ -56,22 +54,22 @@ public class Ball : MonoBehaviour
         {
             _hitMarble.Clear();
             SortedMarble.Clear();
-            InitialMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            _initialMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
 
         if (Input.GetMouseButton(0))
         {
-            MousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            _mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Lr.positionCount = 2;
             Lr.SetPosition(0, transform.position);
-            Lr.SetPosition(1, MousePosition);
+            Lr.SetPosition(1, _mousePosition);
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            BallPosition = BallObject.transform.position;
-            DragRelease(InitialMousePosition, MousePosition, BallPosition);
-            _drag = true;
+            _ballPosition = BallObject.transform.position;
+            DragRelease(_initialMousePosition, _mousePosition, _ballPosition);
+            Drag = true;
         }
     }
 
@@ -81,7 +79,7 @@ public class Ball : MonoBehaviour
 
         _distance = (float)Math.Sqrt(Math.Pow((Mousepos.x - InitMousepos.x), 2.00f) + Math.Pow((Mousepos.y - InitMousepos.y), 2.00f));
 
-        BallObject.AddForce(Direction * (_distance * _powerFactor), ForceMode2D.Impulse);
+        BallObject.AddForce(Direction * (_distance * PowerFactor), ForceMode2D.Impulse);
 
         Lr.positionCount = 0;
     }

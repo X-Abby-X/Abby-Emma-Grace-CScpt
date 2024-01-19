@@ -26,5 +26,4 @@ public class MarbleItems : Item
     {
         return stats * 2;
     }
-
 }

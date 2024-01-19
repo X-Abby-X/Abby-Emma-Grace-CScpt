@@ -26,7 +26,7 @@ public abstract class Person : MonoBehaviour
             this.Health = 0;
             this.IsDefeated();
         }
-        MarbleGameController.updateValues();
+        MarbleGameController.UpdateValues();
     }
 
     public void IsDefeated() {

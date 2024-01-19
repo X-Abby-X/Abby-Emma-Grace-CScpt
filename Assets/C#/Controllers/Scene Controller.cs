@@ -6,19 +6,18 @@ using UnityEngine.SceneManagement;
 public class SceneController : MonoBehaviour
 {
 
-    public Vector2 playerOnMapPosition;
+    public Vector2 PlayerOnMapPosition;
     public List<bool> StoreButtonActiveList = new List<bool>();
-    public Player player;
+    public Player Player;
 
     void Awake()
     {
-        playerOnMapPosition = new Vector2(-6.23f, -2.91f);
+        PlayerOnMapPosition = new Vector2(-6.23f, -2.91f);
     }
 
     void Start()
     {
-        player = GameObject.FindWithTag("Player").GetComponent<Player>();
-        // idk why it need that but it need it
+        Player = GameObject.FindWithTag("Player").GetComponent<Player>();
         GameObject[] objects = GameObject.FindGameObjectsWithTag("Scene Controller");
 
         if (objects.Length > 1)
@@ -30,7 +29,6 @@ public class SceneController : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (SceneManager.GetActiveScene().name == "Store")
@@ -78,5 +76,4 @@ public class SceneController : MonoBehaviour
     {
         SceneManager.LoadScene("World Map");
     }
-
 }

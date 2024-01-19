@@ -8,46 +8,39 @@ using UnityEngine.UI;
 public class Prepcontroller : MonoBehaviour
 {
     public TextMeshProUGUI ButtonText;
-    public Canvas canvas;
-    public Button buttonprefab;
+    public Canvas Canvas;
+    public Button ButtonPrefab;
     public List<Button> ButtonList = new List<Button>();
     private float[] _buttonX = { -5.9f, 0, 5.9f, -5.9f, 0, 5.9f, -5.9f, 0, 5.9f };
     private float[] _buttonY = { 1.5f, 1.5f, 1.5f, 0, 0, 0, -3, -3, -3 };
 
-    public Player player;
+    public Player Player;
     private int _counter;
     public List<string> ItemListName = new List<string>();
 
     public List<Button> ColourButtonList = new List<Button>();
-    private float[] _AskForColourbuttonX = { -5.71f, 0, 5.83f, };
-    private float _AskForColourbuttonY = -3.68f;
-    private string[] _AskForColourText = { "red", "yellow", "blue" };
+    private float[] _askForColourbuttonX = { -5.71f, 0, 5.83f, };
+    private float _askForColourbuttonY = -3.68f;
+    private string[] _askForColourText = { "red", "yellow", "blue" };
 
 
     void Awake()
     {
-        player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        Player = GameObject.FindWithTag("Player").GetComponent<Player>();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        player.Backpack.Clear();
-        player.SortedBackpack.Clear();
-        InventorytoButton();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        Player.Backpack.Clear();
+        Player.SortedBackpack.Clear();
+        InventoryToButton();
     }
 
 
-    void InventorytoButton()
+    void InventoryToButton()
     {
         _counter = 0;
-        foreach (KeyValuePair<Item, int> kvp in player.SortedInventory)
+        foreach (KeyValuePair<Item, int> kvp in Player.SortedInventory)
         {
             SpawnButton(_buttonX[_counter], _buttonY[_counter], $"{kvp.Key.Name} X {kvp.Value}", kvp.Key, _counter, kvp.Key.Name);
             _counter++;
@@ -56,28 +49,28 @@ public class Prepcontroller : MonoBehaviour
 
     void SpawnButton(float x, float y, string content, Item item, int counter, string name)
     {
-        Button newButton = (Button)Instantiate(buttonprefab, new Vector3(x, y, 0), Quaternion.identity);
-        newButton.transform.SetParent(canvas.transform);
+        Button newButton = (Button)Instantiate(ButtonPrefab, new Vector3(x, y, 0), Quaternion.identity);
+        newButton.transform.SetParent(Canvas.transform);
         newButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = content;
         ButtonList.Add(newButton);
-        if (name == "Change All Marble to colour...")
+        if (name == "Change All Marble to Colour...")
         {
-            Debug.Log("running");
+            Debug.Log("Running");
             newButton.onClick.AddListener(delegate { AskForColour(item, counter); });
         }
         else
         {
-            newButton.onClick.AddListener(delegate { AddtoBackPack(item, counter); });
+            newButton.onClick.AddListener(delegate { AddtoBackpack(item, counter); });
         }
 
     }
 
-    void AddtoBackPack(Item item, int num)
+    void AddtoBackpack(Item item, int num)
     {
-        player.Backpack.Add(item);
+        Player.Backpack.Add(item);
         ButtonList[num].interactable = false;
-        player.SortItemList(player.Backpack, player.SortedBackpack);
-        foreach (Item i in player.Backpack)
+        Player.SortItemList(Player.Backpack, Player.SortedBackpack);
+        foreach (Item i in Player.Backpack)
         {
             Debug.Log(i.Name);
         }
@@ -88,9 +81,9 @@ public class Prepcontroller : MonoBehaviour
     {
         for (int i = 0; i < 3; i++)
         {
-            Button newButton = (Button)Instantiate(buttonprefab, new Vector3(_AskForColourbuttonX[i], _AskForColourbuttonY, 0), Quaternion.identity);
-            newButton.transform.SetParent(canvas.transform);
-            newButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = _AskForColourText[i];
+            Button newButton = (Button)Instantiate(ButtonPrefab, new Vector3(_askForColourbuttonX[i], _askForColourbuttonY, 0), Quaternion.identity);
+            newButton.transform.SetParent(Canvas.transform);
+            newButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = _askForColourText[i];
             ColourButtonList.Add(newButton);
             newButton.onClick.AddListener(delegate { SetItemColour(newButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text, item, num); });
         }
@@ -118,6 +111,6 @@ public class Prepcontroller : MonoBehaviour
         {
             ColourButtonList[i].interactable = false;
         }
-        AddtoBackPack(powerup, num);
+        AddtoBackpack(powerup, num);
     }
 }
