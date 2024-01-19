@@ -91,6 +91,10 @@ public class StoreController : MonoBehaviour
         Player.Money -= item.Cost;
         Debug.Log(Player.Money);
         Player.Inventory.Add(item);
+        foreach (Item i in Player.Inventory  )
+        {
+            Debug.Log(i.Name);
+        }
         Player.SortItemList(Player.Inventory, Player.SortedInventory);
     }
 

@@ -22,6 +22,7 @@ public class InventoryController : MonoBehaviour
 
     void Start()
     {
+        Player.SortItemList(Player.Inventory, Player.SortedInventory);
         InventorytoButton();
     }
 

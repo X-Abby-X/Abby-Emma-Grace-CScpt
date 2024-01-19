@@ -366,7 +366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Money: 0
-  Xp: 0
+  XP: 0
   Level: 0
   SceneController: {fileID: 565096427}
   Counter: 0
@@ -681,9 +681,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd64e9e20fc545358e80e31c992ced6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerOnMapPosition: {x: 0, y: 0}
+  PlayerOnMapPosition: {x: 0, y: 0}
   StoreButtonActiveList: 
-  player: {fileID: 32105055}
+  Player: {fileID: 32105055}
 --- !u!1 &777015215
 GameObject:
   m_ObjectHideFlags: 0

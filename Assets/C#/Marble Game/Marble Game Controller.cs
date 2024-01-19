@@ -197,28 +197,19 @@ public class MarbleGameController : MonoBehaviour
                 MarbleItems powerup = (MarbleItems)kvp.Key;
                 if (powerup.Type == "colour")
                 {
-                    if (kvp.Value >= 1)
-                    {
-                        Debug.Log("found colour");
-                        _colourType = powerup.ColourValue;
-                        Player.SortedInventory[kvp.Key] -= 1;
-                        Debug.Log(kvp.Value);
-                        randomColour = false;
-                    }
-
-                    if (kvp.Value <= 1)
-                    {
-                        Player.Inventory.Remove(kvp.Key);
-                        Player.SortedInventory.Remove(kvp.Key);
-                        Player.SortItemList(Player.Inventory, Player.SortedInventory);
-
-                    }
+                    Debug.Log("found colour");
+                    _colourType = powerup.ColourValue;
+                    Player.Inventory.Remove(kvp.Key);
+                    Player.SortItemList(Player.Inventory, Player.SortedInventory);
+                    randomColour = false;
                     break;
                 }
             }
 
         }
     }
+
+
 
     void SpawnMarble()
     {

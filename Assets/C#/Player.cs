@@ -185,18 +185,28 @@ public class Player : MonoBehaviour
     {
         Dictionary.Clear();
 
-        foreach (Item items in list)
+        foreach (Item item in list)
         {
-            if (Dictionary.ContainsKey(items))
+            bool Added = false;
+
+            foreach (Item key in Dictionary.Keys)
             {
-                Dictionary[items] += 1;
-                Debug.Log("Found");
+                if (key.Name == item.Name)
+                {
+                    Dictionary[item] += 1;
+                    Debug.Log("Found");
+                    Added = true;
+                    break;
+                }
             }
-            else
+
+            if (Added == false)
             {
-                Dictionary.Add(items, 1);
+                Debug.Log(item.Name);
+                Dictionary.Add(item, 1);
                 Debug.Log("New");
             }
+
         }
     }
 }

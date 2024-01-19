@@ -813,11 +813,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c77ed4073034b7db772eaa08bacf11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  Player: {fileID: 0}
   SceneController: {fileID: 0}
   MoneyText: {fileID: 1079814870}
-  canvas: {fileID: 88555987}
-  buttonprefab: {fileID: 1833324366}
+  Canvas: {fileID: 88555987}
+  ButtonPrefab: {fileID: 1833324366}
   ButtonList: []
 --- !u!1 &661373922
 GameObject:

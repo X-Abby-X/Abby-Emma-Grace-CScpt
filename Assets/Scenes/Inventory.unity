@@ -670,9 +670,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db3548b18e3c43c47a3eba249bd36f53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 849041051}
-  buttonprefab: {fileID: 124024135}
-  player: {fileID: 0}
+  Canvas: {fileID: 849041051}
+  ButtonPrefab: {fileID: 124024135}
+  Player: {fileID: 0}
 --- !u!4 &1644898217
 Transform:
   m_ObjectHideFlags: 0
