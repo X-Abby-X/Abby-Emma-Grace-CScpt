@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
@@ -32,6 +33,43 @@ public class SceneController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (SceneManager.GetActiveScene().name == "Store")
+        {
+            if (Input.GetKey(KeyCode.Return))
+            {
+                ToWorldMap();
+            }
+        }
+
+        if (SceneManager.GetActiveScene().name == "Prep")
+        {
+            if (Input.GetKey(KeyCode.Return))
+            {
+                SceneManager.LoadScene("Marble Game");
+            }
+            else if (Input.GetKey(KeyCode.Space))
+            {
+                ToWorldMap();
+            }
+        }
+
+        if (SceneManager.GetActiveScene().name == "Inventory")
+        {
+            if (Input.GetKey(KeyCode.Return))
+            {
+                SceneManager.LoadScene("Store");
+            }
+        }
     }
+
+    public void ToSaveFile()
+    {
+        SceneManager.LoadScene("Save File");
+    }
+
+    public void ToWorldMap()
+    {
+        SceneManager.LoadScene("World Map");
+    }
+
 }

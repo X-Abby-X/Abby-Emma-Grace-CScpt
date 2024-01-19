@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 230415377}
   - component: {fileID: 230415378}
   - component: {fileID: 230415379}
+  - component: {fileID: 230415380}
   m_Layer: 0
   m_Name: ball
   m_TagString: Untagged
@@ -383,6 +384,23 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &230415380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 230415374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d34ff721d7c8e47fc9fe2a9c26741a86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MarbleGameController: {fileID: 951126193}
+  BallObject: {fileID: 230415378}
+  Lr: {fileID: 230415379}
+  _powerFactor: 2
+  _drag: 0
 --- !u!1 &290675488
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,6 +883,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 951126192}
+  - component: {fileID: 951126193}
   m_Layer: 0
   m_Name: Marble Game Controller
   m_TagString: Untagged
@@ -887,6 +906,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &951126193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 951126191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c867a6a149c1440f481d96c91f8b4582, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnemyList: []
+  Enemyprefab: {fileID: 2049198230}
+  CharaterTotalHp: 0
+  Characterprefeb: {fileID: 1663080167}
+  CharacterList: []
+  canvas: {fileID: 943254191}
+  text: {fileID: 290675490}
+  TextList: []
+  Marbleprefab: {fileID: 1699770189}
+  MarbleList: []
+  GameStart: 0
+  level: 0
+  player: {fileID: 0}
 --- !u!1 &1072809354
 GameObject:
   m_ObjectHideFlags: 0
@@ -1051,6 +1095,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1663080169}
   - component: {fileID: 1663080168}
+  - component: {fileID: 1663080170}
   m_Layer: 0
   m_Name: character
   m_TagString: Untagged
@@ -1125,6 +1170,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1663080170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663080167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6fdf5d9fa696424f9f9ad104431ec9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MarbleGameController: {fileID: 951126193}
+  Health: 0
+  Strength: 0
+  Colour: 
+  ColourBonus: 0
+  MaxHealth: 0
+  player: {fileID: 0}
+  ball: {fileID: 230415380}
+  _applied: 0
 --- !u!1 &1699770189
 GameObject:
   m_ObjectHideFlags: 0
@@ -1136,6 +1202,7 @@ GameObject:
   - component: {fileID: 1699770191}
   - component: {fileID: 1699770190}
   - component: {fileID: 1699770192}
+  - component: {fileID: 1699770193}
   m_Layer: 0
   m_Name: marbles
   m_TagString: Marble
@@ -1245,6 +1312,24 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 3.1249998
+--- !u!114 &1699770193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699770189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd963ee7a166fa745be903fac38bda95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Colour: 
+  _value: 0
+  spriteArray:
+  - {fileID: 21300000, guid: 4325401871b944883b62b9b1b9bf8e33, type: 3}
+  - {fileID: 21300000, guid: 12078659cdb3a4059b918416baaad4ef, type: 3}
+  - {fileID: 21300000, guid: 19e208756eee24299a3e5841df3d5591, type: 3}
 --- !u!1 &1808497038
 GameObject:
   m_ObjectHideFlags: 0
@@ -1332,6 +1417,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2049198232}
   - component: {fileID: 2049198231}
+  - component: {fileID: 2049198233}
   m_Layer: 0
   m_Name: enemy
   m_TagString: Untagged
@@ -1406,6 +1492,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2049198233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2049198230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84cfb8207abd247f7bb47b8b448397b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MarbleGameController: {fileID: 0}
+  Health: 0
+  Strength: 0
+  Colour: 
+  ColourBonus: 0
+  spriteArray:
+  - {fileID: 21300000, guid: d0de73914295f89498a006322b49d449, type: 3}
+  - {fileID: 21300000, guid: 0778806b6c0cb2a4ca7566bab9faf841, type: 3}
+  - {fileID: 21300000, guid: 33cb8731d5f0878479dc5a7ec1841946, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

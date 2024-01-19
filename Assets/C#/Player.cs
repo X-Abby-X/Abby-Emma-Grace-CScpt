@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static UnityEditor.Progress;
@@ -16,6 +17,72 @@ public class Player : MonoBehaviour
 
     public List<Item> Backpack = new List<Item>();
     public Dictionary<Item, int> SortedBackpack = new Dictionary<Item, int>();
+
+    public List<Stats> SaveFiles = new List<Stats>();
+    public int Counter;
+
+    public class Stats
+    {
+        public int _id;
+        public int _money;
+        public int _xp;
+        public int _level;
+        public List<Item> _inventory = new List<Item>();
+        public List<bool> _storeButtonActiveList = new List<bool>();
+
+        public Stats(int id, int money, int xp, int level, List<Item> inventory, List<bool> storeButtonActiveList)
+        {
+            Debug.Log("make save file");
+            this._id = id;
+            this._money = money;
+            this._xp = xp;
+            this._level = level;
+            this._inventory = inventory;
+            this._storeButtonActiveList = storeButtonActiveList;
+        }
+
+        public void GetStats()
+        {
+            Debug.Log("print save file");
+            Debug.Log(this._id);
+            Debug.Log(this._money);
+            Debug.Log(this._xp);
+            Debug.Log(this._level);
+            foreach (Item i in _inventory)
+            {
+                Debug.Log(i.Name);
+            }
+        }
+
+    }
+
+    public void Save()
+    {
+        Debug.Log("save");
+        List<Item> InventoryCopy = new List<Item>(Inventory);
+        List<bool> ButtonActivateCopy = new List<bool>(SceneController.StoreButtonActiveList);
+        Stats newSaveFile = new Stats(SaveFiles.Count + 1, this.Money, this.Xp, this.Level, InventoryCopy, ButtonActivateCopy);
+        SaveFiles.Add(newSaveFile);
+        if (SaveFiles.Count >= 5)
+        {
+            SaveFiles[Counter % 5] = newSaveFile;
+        }
+        Counter++;
+    }
+
+
+    public void LoadSaveFile(Stats stats)
+    {
+        this.Money = stats._money;
+        this.Xp = stats._xp;
+        this.Level = stats._level;
+        this.Inventory.Clear();
+        this.Inventory.AddRange(stats._inventory);
+        this.SortItemList(Inventory, SortedInventory);
+        SceneController.StoreButtonActiveList.Clear();
+        SceneController.StoreButtonActiveList.AddRange(stats._storeButtonActiveList);
+        SceneController.ToWorldMap();
+    }
 
 
     // Start is called before the first frame update
@@ -62,7 +129,7 @@ public class Player : MonoBehaviour
 
     void Playermovement()
     {
-        if (SceneManager.GetActiveScene().name == "world map")
+        if (SceneManager.GetActiveScene().name == "World Map")
         {
             //arrow key input
             float v = Input.GetAxis("Vertical");
