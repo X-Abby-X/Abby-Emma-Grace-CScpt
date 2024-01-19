@@ -98,9 +98,18 @@ public class MarbleGameController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Pause();
+            if (GamePaused)
+            {
+                Resume();
+            }
+            else
+            {
+                Pause();
+            }
+
+            
         }
     }
 
