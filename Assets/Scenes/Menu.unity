@@ -365,12 +365,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 317d263d5747f434e81fb52fac0c7845, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpriteArray:
+  - {fileID: 21300000, guid: efa1e7db5815e854ab9fc89198cbe067, type: 3}
+  - {fileID: 21300000, guid: ec2906f2a8aacc644beb661adb504231, type: 3}
+  - {fileID: 21300000, guid: 5a0526ee3814b1d47ab541019f947f5e, type: 3}
   Money: 0
   XP: 0
   Level: 0
   Colour: Red
   SceneController: {fileID: 565096427}
-  Counter: 0
 --- !u!1 &32884257
 GameObject:
   m_ObjectHideFlags: 0
@@ -820,6 +823,7 @@ MonoBehaviour:
   StoreButtonActiveList: 
   Volume: -10000
   _player: {fileID: 32105055}
+  ColourOptionsOn: 000000
 --- !u!1 &714775951
 GameObject:
   m_ObjectHideFlags: 0

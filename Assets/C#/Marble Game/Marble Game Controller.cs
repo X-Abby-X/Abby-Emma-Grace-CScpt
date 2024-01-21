@@ -376,6 +376,8 @@ public class MarbleGameController : MonoBehaviour
 
         newCharacter.GetComponent<Character>().Health = 10;
         newCharacter.GetComponent<Character>().Colour = _player.Colour;
+
+
         newCharacter.GetComponent<Character>().ColourBonus = 2;
         newCharacter.GetComponent<Character>().MaxHealth = newCharacter.GetComponent<Character>().Health;
         SpawnTextBox((_characterX + 2.82f), (_characterY - 2.1f), CharaterTotalHP.ToString());

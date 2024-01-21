@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
+    public Sprite[] SpriteArray;
     public int Money;
     public int XP;
     public int Level;
@@ -19,36 +18,38 @@ public class Player : MonoBehaviour
     public Dictionary<Item, int> SortedBackpack = new Dictionary<Item, int>();
 
     public List<Stats> SaveFiles = new List<Stats>();
-    public int Counter;
+    private int _saveFileCounter;
 
     public class Stats
     {
-        public int _id;
-        public int _money;
-        public int _xp;
-        public int _level;
-        public List<Item> _inventory = new List<Item>();
-        public List<bool> _storeButtonActiveList = new List<bool>();
+        public int ID;
+        public int Money;
+        public int XP;
+        public int Level;
+        public string Colour;
+        public List<Item> Inventory = new List<Item>();
+        public List<bool> StoreButtonActiveList = new List<bool>();
 
-        public Stats(int id, int money, int xp, int level, List<Item> inventory, List<bool> storeButtonActiveList)
+        public Stats(int id, int money, int xp, int level, string colour, List<Item> inventory, List<bool> storeButtonActiveList)
         {
             Debug.Log("Make Save File");
-            this._id = id;
-            this._money = money;
-            this._xp = xp;
-            this._level = level;
-            this._inventory = inventory;
-            this._storeButtonActiveList = storeButtonActiveList;
+            this.ID = id;
+            this.Money = money;
+            this.XP = xp;
+            this.Level = level;
+            this.Colour = colour;
+            this.Inventory = inventory;
+            this.StoreButtonActiveList = storeButtonActiveList;
         }
 
         public void GetStats()
         {
             Debug.Log("Print Save File");
-            Debug.Log(this._id);
-            Debug.Log(this._money);
-            Debug.Log(this._xp);
-            Debug.Log(this._level);
-            foreach (Item i in _inventory)
+            Debug.Log(this.ID);
+            Debug.Log(this.Money);
+            Debug.Log(this.XP);
+            Debug.Log(this.Level);
+            foreach (Item i in Inventory)
             {
                 Debug.Log(i.Name);
             }
@@ -61,31 +62,29 @@ public class Player : MonoBehaviour
         Debug.Log("Save");
         List<Item> InventoryCopy = new List<Item>(Inventory);
         List<bool> ButtonActivateCopy = new List<bool>(SceneController.StoreButtonActiveList);
-        Stats newSaveFile = new Stats(SaveFiles.Count + 1, this.Money, this.XP, this.Level, InventoryCopy, ButtonActivateCopy);
+        Stats newSaveFile = new Stats(SaveFiles.Count + 1, this.Money, this.XP, this.Level, this.Colour, InventoryCopy, ButtonActivateCopy);
         SaveFiles.Add(newSaveFile);
         if (SaveFiles.Count >= 5)
         {
-            SaveFiles[Counter % 5] = newSaveFile;
+            SaveFiles[_saveFileCounter % 5] = newSaveFile;
         }
-        Counter++;
+        _saveFileCounter++;
     }
-
 
     public void LoadSaveFile(Stats stats)
     {
-        this.Money = stats._money;
-        this.XP = stats._xp;
-        this.Level = stats._level;
+        this.Money = stats.Money;
+        this.XP = stats.XP;
+        this.Level = stats.Level;
+        SetColour(stats.Colour);
         this.Inventory.Clear();
-        this.Inventory.AddRange(stats._inventory);
+        this.Inventory.AddRange(stats.Inventory);
         this.SortItemList(Inventory, SortedInventory);
         SceneController.StoreButtonActiveList.Clear();
-        SceneController.StoreButtonActiveList.AddRange(stats._storeButtonActiveList);
+        SceneController.StoreButtonActiveList.AddRange(stats.StoreButtonActiveList);
         SceneController.ToWorldMap();
     }
 
-
-    // Start is called before the first frame update
     void Start()
     {
         this.gameObject.transform.position = SceneController.PlayerOnMapPosition;
@@ -98,17 +97,36 @@ public class Player : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
-    // Update is called once per frame
     void Update()
     {
         PlayerMovement();
+    }
+
+    public void SetColour(string colour)
+    {
+        this.Colour = colour;
+
+
+        if (this.Colour == "Red")
+        {
+            this.GetComponent<SpriteRenderer>().sprite = SpriteArray[0];
+        }
+        else if (this.Colour == "Yellow")
+        {
+
+            this.GetComponent<SpriteRenderer>().sprite = SpriteArray[1];
+        }
+        else
+        {
+            this.GetComponent<SpriteRenderer>().sprite = SpriteArray[2];
+        }
+
     }
 
     public void levelUp()
     {
         this.Level = (this.XP - this.Level * 10) / 10;
     }
-
 
     public void GetStats()
     {

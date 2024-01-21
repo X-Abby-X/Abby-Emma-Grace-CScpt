@@ -47,7 +47,7 @@ public class SaveFileController : MonoBehaviour
             else
             {
                 int num = i - 1;
-                newButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = $"Save File{_player.SaveFiles[num]._id}";
+                newButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = $"Save File{_player.SaveFiles[num].ID}";
                 ButtonList[i].onClick.AddListener(delegate { _player.LoadSaveFile(_player.SaveFiles[num]); });
             }
         }

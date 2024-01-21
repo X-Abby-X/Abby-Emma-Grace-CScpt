@@ -13,6 +13,7 @@ public class SceneController : MonoBehaviour
     [SerializeField] private Player _player;
     private int _currentSceneIndex;
     private int _previousSceneIndex;
+    public List<bool> ColourOptionsOn = new List<bool> { false, false, false };
 
     void Awake()
     {
