@@ -432,10 +432,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d34ff721d7c8e47fc9fe2a9c26741a86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MarbleGameController: {fileID: 951126193}
-  BallObject: {fileID: 230415378}
-  Lr: {fileID: 230415379}
-  PowerFactor: 2
+  _marbleGameController: {fileID: 951126193}
+  _ballObject: {fileID: 230415378}
+  _lr: {fileID: 230415379}
   Drag: 0
 --- !u!1 &290675488
 GameObject:
@@ -2077,10 +2076,8 @@ MonoBehaviour:
   Strength: 0
   Colour: 
   ColourBonus: 0
+  _ball: {fileID: 230415380}
   MaxHealth: 0
-  Player: {fileID: 0}
-  Ball: {fileID: 230415380}
-  _applied: 0
 --- !u!1 &1699770189
 GameObject:
   m_ObjectHideFlags: 0

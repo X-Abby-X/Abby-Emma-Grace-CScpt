@@ -5,12 +5,11 @@ using System;
 
 public class Ball : MonoBehaviour
 {
-    public MarbleGameController MarbleGameController;
-
-    public Rigidbody2D BallObject;
-    public LineRenderer Lr;
+    [SerializeField] private MarbleGameController _marbleGameController;
+    [SerializeField] private Rigidbody2D _ballObject;
+    [SerializeField] private LineRenderer _lr;
     private float _distance;
-    public float PowerFactor = 2f;
+    private float _powerFactor = 2f;
     private Vector2 _initialMousePosition;
     private Vector2 _ballPosition;
     private Vector2 _mousePosition;
@@ -23,7 +22,7 @@ public class Ball : MonoBehaviour
 
     void Update()
     {
-        if (MarbleGameController.GameStart && MarbleGameController.GamePaused == false)
+        if (_marbleGameController.GameStart && MarbleGameController.GamePaused == false)
         {
             if (Drag == false)
             {
@@ -41,9 +40,9 @@ public class Ball : MonoBehaviour
 
     public void BallStop()
     {
-        if (Drag && BallObject.velocity.magnitude < 0.2f)
+        if (Drag && _ballObject.velocity.magnitude < 0.2f)
         {
-            StartCoroutine(MarbleGameController.AttackGameSequence());
+            StartCoroutine(_marbleGameController.AttackGameSequence());
             Drag = false;
         }
     }
@@ -60,14 +59,14 @@ public class Ball : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             _mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Lr.positionCount = 2;
-            Lr.SetPosition(0, transform.position);
-            Lr.SetPosition(1, _mousePosition);
+            _lr.positionCount = 2;
+            _lr.SetPosition(0, transform.position);
+            _lr.SetPosition(1, _mousePosition);
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            _ballPosition = BallObject.transform.position;
+            _ballPosition = _ballObject.transform.position;
             DragRelease(_initialMousePosition, _mousePosition, _ballPosition);
             Drag = true;
         }
@@ -79,9 +78,9 @@ public class Ball : MonoBehaviour
 
         _distance = (float)Math.Sqrt(Math.Pow((Mousepos.x - InitMousepos.x), 2.00f) + Math.Pow((Mousepos.y - InitMousepos.y), 2.00f));
 
-        BallObject.AddForce(Direction * (_distance * PowerFactor), ForceMode2D.Impulse);
+        _ballObject.AddForce(Direction * (_distance * _powerFactor), ForceMode2D.Impulse);
 
-        Lr.positionCount = 0;
+        _lr.positionCount = 0;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

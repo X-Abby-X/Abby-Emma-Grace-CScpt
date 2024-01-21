@@ -7,11 +7,13 @@ using static UnityEditor.Progress;
 
 public class Character : Person
 {
-    public int MaxHealth;
     private Player _player;
-    public Ball Ball;
+    [SerializeField] private Ball _ball;
+
     private bool _bonus = false;
-    public bool _applied = false;
+    private bool _applied = false;
+
+    public int MaxHealth;
 
     public Character(string colour, int health, int strength) : base(colour, health, strength)
     {
@@ -80,12 +82,12 @@ public class Character : Person
         Debug.Log($"character colour : {this.Colour} target enemy colour : {targetEnemy.GetComponent<Enemy>().Colour} targetEnemy health : {targetEnemy.GetComponent<Enemy>().Health}");
         if (_bonus)
         {
-            finalDamage = (CalculateDamage(Ball.SortedMarble) + this.Strength) * base.ColourBonus;
+            finalDamage = (CalculateDamage(_ball.SortedMarble) + this.Strength) * base.ColourBonus;
         }
         else
         {
 
-            finalDamage = CalculateDamage(Ball.SortedMarble) + this.Strength;
+            finalDamage = CalculateDamage(_ball.SortedMarble) + this.Strength;
         }
 
         targetEnemy.GetComponent<Enemy>().TakeDamage(finalDamage);

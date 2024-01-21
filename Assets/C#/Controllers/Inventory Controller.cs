@@ -6,40 +6,42 @@ using UnityEngine.UI;
 
 public class InventoryController : MonoBehaviour
 {
-    public Canvas Canvas;
-    public Button ButtonPrefab;
+    private Player _player;
+    private SceneController _sceneController;
+    [SerializeField] private Canvas _canvas;
+    [SerializeField] private Button _buttonPrefab;
+    [SerializeField] private Button _backButton;
+
     private float[] _buttonX = { -5.9f, 0, 5.9f, -5.9f, 0, 5.9f, -5.9f, 0, 5.9f };
     private float[] _buttonY = { 1.5f, 1.5f, 1.5f, 0, 0, 0, -3, -3, -3 };
 
-    public Player Player;
-    private int _counter;
-
-
     void Awake()
     {
-        Player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        _player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        _sceneController = GameObject.FindWithTag("Scene Controller").GetComponent<SceneController>();
+        _backButton.onClick.AddListener(_sceneController.ToStore);
     }
 
     void Start()
     {
-        Player.SortItemList(Player.Inventory, Player.SortedInventory);
+        _player.SortItemList(_player.Inventory, _player.SortedInventory);
         InventorytoButton();
     }
 
     void InventorytoButton()
     {
-        _counter = 0;
-        foreach (KeyValuePair<Item, int> kvp in Player.SortedInventory)
+        int counter = 0;
+        foreach (KeyValuePair<Item, int> kvp in _player.SortedInventory)
         {
-            SpawnButton(_buttonX[_counter], _buttonY[_counter], $"{kvp.Key.Name} X {kvp.Value}");
-            _counter++;
+            SpawnButton(_buttonX[counter], _buttonY[counter], $"{kvp.Key.Name} X {kvp.Value}");
+            counter++;
         }
     }
 
     void SpawnButton(float x, float y, string content)
     {
-        Button newButton = (Button)Instantiate(ButtonPrefab, new Vector3(x, y, 0), Quaternion.identity);
-        newButton.transform.SetParent(Canvas.transform);
+        Button newButton = (Button)Instantiate(_buttonPrefab, new Vector3(x, y, 0), Quaternion.identity);
+        newButton.transform.SetParent(_canvas.transform);
         newButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = content;
     }
 }

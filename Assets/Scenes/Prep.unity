@@ -167,12 +167,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc9a52e6f06c949e0b533c84a24921b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ButtonText: {fileID: 1712261664}
-  Canvas: {fileID: 976038123}
-  ButtonPrefab: {fileID: 818865715}
-  ButtonList: []
-  Player: {fileID: 0}
-  ItemListName: []
+  _canvas: {fileID: 976038123}
+  _buttonPrefab: {fileID: 818865715}
   ColourButtonList: []
 --- !u!1 &739767360
 GameObject:
@@ -776,8 +772,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 17
+  m_fontSizeBase: 17
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

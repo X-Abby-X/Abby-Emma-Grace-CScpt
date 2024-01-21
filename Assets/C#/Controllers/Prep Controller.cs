@@ -7,32 +7,29 @@ using UnityEngine.UI;
 
 public class Prepcontroller : MonoBehaviour
 {
-    public TextMeshProUGUI ButtonText;
-    public Canvas Canvas;
-    public Button ButtonPrefab;
-    public List<Button> ButtonList = new List<Button>();
+    [SerializeField] private Canvas _canvas;
+    [SerializeField] private Button _buttonPrefab;
+    private List<Button> _buttonList = new List<Button>();
     private float[] _buttonX = { -5.9f, 0, 5.9f, -5.9f, 0, 5.9f, -5.9f, 0, 5.9f };
     private float[] _buttonY = { 1.5f, 1.5f, 1.5f, 0, 0, 0, -3, -3, -3 };
 
-    public Player Player;
+    private Player _player;
     private int _counter;
-    public List<string> ItemListName = new List<string>();
 
-    public List<Button> ColourButtonList = new List<Button>();
+    private List<Button> _colourButtonList = new List<Button>();
     private float[] _askForColourbuttonX = { -5.71f, 0, 5.83f, };
     private float _askForColourbuttonY = -3.68f;
     private string[] _askForColourText = { "red", "yellow", "blue" };
 
-
     void Awake()
     {
-        Player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        _player = GameObject.FindWithTag("Player").GetComponent<Player>();
     }
 
     void Start()
     {
-        Player.Backpack.Clear();
-        Player.SortedBackpack.Clear();
+        _player.Backpack.Clear();
+        _player.SortedBackpack.Clear();
         InventoryToButton();
     }
 
@@ -40,7 +37,7 @@ public class Prepcontroller : MonoBehaviour
     void InventoryToButton()
     {
         _counter = 0;
-        foreach (KeyValuePair<Item, int> kvp in Player.SortedInventory)
+        foreach (KeyValuePair<Item, int> kvp in _player.SortedInventory)
         {
             SpawnButton(_buttonX[_counter], _buttonY[_counter], $"{kvp.Key.Name} X {kvp.Value}", kvp.Key, _counter, kvp.Key.Name);
             _counter++;
@@ -49,10 +46,10 @@ public class Prepcontroller : MonoBehaviour
 
     void SpawnButton(float x, float y, string content, Item item, int counter, string name)
     {
-        Button newButton = (Button)Instantiate(ButtonPrefab, new Vector3(x, y, 0), Quaternion.identity);
-        newButton.transform.SetParent(Canvas.transform);
+        Button newButton = (Button)Instantiate(_buttonPrefab, new Vector3(x, y, 0), Quaternion.identity);
+        newButton.transform.SetParent(_canvas.transform);
         newButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = content;
-        ButtonList.Add(newButton);
+        _buttonList.Add(newButton);
         if (name == "Change All Marble to Colour...")
         {
             Debug.Log("Running");
@@ -67,10 +64,10 @@ public class Prepcontroller : MonoBehaviour
 
     void AddtoBackpack(Item item, int num)
     {
-        Player.Backpack.Add(item);
-        ButtonList[num].interactable = false;
-        Player.SortItemList(Player.Backpack, Player.SortedBackpack);
-        foreach (Item i in Player.Backpack)
+        _player.Backpack.Add(item);
+        _buttonList[num].interactable = false;
+        _player.SortItemList(_player.Backpack, _player.SortedBackpack);
+        foreach (Item i in _player.Backpack)
         {
             Debug.Log(i.Name);
         }
@@ -81,10 +78,10 @@ public class Prepcontroller : MonoBehaviour
     {
         for (int i = 0; i < 3; i++)
         {
-            Button newButton = (Button)Instantiate(ButtonPrefab, new Vector3(_askForColourbuttonX[i], _askForColourbuttonY, 0), Quaternion.identity);
-            newButton.transform.SetParent(Canvas.transform);
+            Button newButton = (Button)Instantiate(_buttonPrefab, new Vector3(_askForColourbuttonX[i], _askForColourbuttonY, 0), Quaternion.identity);
+            newButton.transform.SetParent(_canvas.transform);
             newButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = _askForColourText[i];
-            ColourButtonList.Add(newButton);
+            _colourButtonList.Add(newButton);
             newButton.onClick.AddListener(delegate { SetItemColour(newButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text, item, num); });
         }
 
@@ -107,9 +104,9 @@ public class Prepcontroller : MonoBehaviour
             powerup.ColourValue = 3;
         }
 
-        for (int i = 0; i < ColourButtonList.Count; i++)
+        for (int i = 0; i < _colourButtonList.Count; i++)
         {
-            ColourButtonList[i].interactable = false;
+            _colourButtonList[i].interactable = false;
         }
         AddtoBackpack(powerup, num);
     }
