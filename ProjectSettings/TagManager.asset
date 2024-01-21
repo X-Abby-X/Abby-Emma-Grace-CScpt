@@ -11,6 +11,8 @@ TagManager:
   - Store
   - Scene Controller
   - Audio Controller
+  - yti
+  - Coin
   layers:
   - Default
   - TransparentFX

@@ -171,11 +171,21 @@ public class Player : MonoBehaviour
 
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Coin")
+        {
+            this.Money += 1;
+            other.gameObject.SetActive(false);
+        }
+    }
+
     void OnTriggerStay2D(Collider2D collision)
     {
+       
+
         if (Input.GetKey(KeyCode.Return))
         {
-
             if (collision.tag == "Store")
             {
                 SceneManager.LoadScene("Store");
