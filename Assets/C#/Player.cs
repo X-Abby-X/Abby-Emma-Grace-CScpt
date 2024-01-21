@@ -5,12 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private SceneController _sceneController;
+
     public Sprite[] SpriteArray;
     public int Money;
     public int XP;
     public int Level;
     public string Colour = "Red";
-    public SceneController SceneController;
+  
     public List<Item> Inventory = new List<Item>();
     public Dictionary<Item, int> SortedInventory = new Dictionary<Item, int>();
 
@@ -61,7 +63,7 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Save");
         List<Item> InventoryCopy = new List<Item>(Inventory);
-        List<bool> ButtonActivateCopy = new List<bool>(SceneController.StoreButtonActiveList);
+        List<bool> ButtonActivateCopy = new List<bool>(_sceneController.StoreButtonActiveList);
         Stats newSaveFile = new Stats(SaveFiles.Count + 1, this.Money, this.XP, this.Level, this.Colour, InventoryCopy, ButtonActivateCopy);
         SaveFiles.Add(newSaveFile);
         if (SaveFiles.Count >= 5)
@@ -80,14 +82,14 @@ public class Player : MonoBehaviour
         this.Inventory.Clear();
         this.Inventory.AddRange(stats.Inventory);
         this.SortItemList(Inventory, SortedInventory);
-        SceneController.StoreButtonActiveList.Clear();
-        SceneController.StoreButtonActiveList.AddRange(stats.StoreButtonActiveList);
-        SceneController.ToWorldMap();
+        _sceneController.StoreButtonActiveList.Clear();
+        _sceneController.StoreButtonActiveList.AddRange(stats.StoreButtonActiveList);
+        _sceneController.ToWorldMap();
     }
 
     void Start()
     {
-        this.gameObject.transform.position = SceneController.PlayerOnMapPosition;
+        this.gameObject.transform.position = _sceneController.PlayerOnMapPosition;
         GameObject[] objects = GameObject.FindGameObjectsWithTag("Player");
 
         if (objects.Length > 1)
@@ -153,14 +155,14 @@ public class Player : MonoBehaviour
             float v = Input.GetAxis("Vertical");
             float h = Input.GetAxis("Horizontal");
 
-            Vector2 pos = SceneController.PlayerOnMapPosition;
+            Vector2 pos = _sceneController.PlayerOnMapPosition;
 
             pos.y += v * 3 * Time.deltaTime;
             pos.x += h * 3 * Time.deltaTime;
 
             transform.position = pos;
 
-            SceneController.PlayerOnMapPosition = transform.position;
+            _sceneController.PlayerOnMapPosition = transform.position;
         }
         else
         {

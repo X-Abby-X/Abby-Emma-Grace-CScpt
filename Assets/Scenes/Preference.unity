@@ -794,11 +794,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _audioMixer: {fileID: 24100000, guid: 282c79a84e668441f84ac135597b1c00, type: 2}
   _musicSlider: {fileID: 89343786}
-  BackButton: {fileID: 2109192787}
   _colourOptions:
   - {fileID: 910649171}
   - {fileID: 1451849002}
   - {fileID: 589543256}
+  _backButton: {fileID: 2109192787}
 --- !u!4 &449703665
 Transform:
   m_ObjectHideFlags: 0

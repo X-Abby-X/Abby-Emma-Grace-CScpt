@@ -365,6 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 317d263d5747f434e81fb52fac0c7845, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sceneController: {fileID: 565096427}
   SpriteArray:
   - {fileID: 21300000, guid: efa1e7db5815e854ab9fc89198cbe067, type: 3}
   - {fileID: 21300000, guid: ec2906f2a8aacc644beb661adb504231, type: 3}
@@ -373,7 +374,6 @@ MonoBehaviour:
   XP: 0
   Level: 0
   Colour: Red
-  SceneController: {fileID: 565096427}
 --- !u!1 &32884257
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,10 +819,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd64e9e20fc545358e80e31c992ced6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 32105055}
   PlayerOnMapPosition: {x: 0, y: 0}
   StoreButtonActiveList: 
   Volume: -10000
-  _player: {fileID: 32105055}
   ColourOptionsOn: 000000
 --- !u!1 &714775951
 GameObject:
@@ -854,8 +854,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff97a3fbc5dfc4b7493de6681d391fdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MusicSource: {fileID: 714775953}
-  BackGroundMusic: {fileID: 8300000, guid: 6ec0d06df6bc94872bbd5de7c804953b, type: 3}
+  _musicSource: {fileID: 714775953}
+  _backGroundMusic: {fileID: 8300000, guid: 6ec0d06df6bc94872bbd5de7c804953b, type: 3}
 --- !u!82 &714775953
 AudioSource:
   m_ObjectHideFlags: 0

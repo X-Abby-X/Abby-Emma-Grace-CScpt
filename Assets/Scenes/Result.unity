@@ -167,8 +167,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb6efa8ffa25649f0aa77ffa4a79b77e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Canvas: {fileID: 846512922}
-  Text: {fileID: 2039926143}
+  _canvas: {fileID: 846512925}
+  _text: {fileID: 2039926143}
   _toWorldMapButton: {fileID: 2134251370}
 --- !u!1 &846512922
 GameObject:
@@ -445,7 +445,7 @@ GameObject:
   - component: {fileID: 1894385381}
   - component: {fileID: 1894385380}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Button Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

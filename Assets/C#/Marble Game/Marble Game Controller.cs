@@ -11,30 +11,33 @@ using UnityEngine.Audio;
 public class MarbleGameController : MonoBehaviour
 {
     // Enemy
+    [SerializeField] private GameObject _enemyprefab;
+    public List<GameObject> EnemyList = new List<GameObject>();
+    public Dictionary<string, List<GameObject>> ColourEnemylist = new Dictionary<string, List<GameObject>>();
+
     private int _enemyNum = 3;
     private float[] _enemyX = { -7.03f, -4.46f, -2.15f };
     private float _enemyY = 2.9f;
     private int _enemyTotalHP;
-    public GameObject Enemyprefab;
-    public List<GameObject> EnemyList = new List<GameObject>();
     
-    public Dictionary<string, List<GameObject>> ColourEnemylist = new Dictionary<string, List<GameObject>>();
-
     // Character
+    [SerializeField] private GameObject _characterPrefeb;
+    public List<GameObject> CharacterList = new List<GameObject>();
+
     private float _characterX = -7.84f;
     private float _characterY = -1.73f;
     public int CharaterTotalHP;
-    public GameObject CharacterPrefeb;
-    public List<GameObject> CharacterList = new List<GameObject>();
 
     // Text box
-    public GameObject Canvas;
-    public TMP_Text Text;
+    [SerializeField] private Canvas _canvas;
+    [SerializeField] private TMP_Text _text;
+
     public List<TMP_Text> TextList = new List<TMP_Text>();
 
     // Marbles
-    public GameObject MarblePrefab;
+    [SerializeField] private GameObject _marblePrefab;
     public List<GameObject> MarbleList = new List<GameObject>();
+
     private float _marbleX;
     private float _marbleY;
     private int _marbleNum = 10;
@@ -44,7 +47,9 @@ public class MarbleGameController : MonoBehaviour
     // Game control
     private Player _player;
     private SceneController _sceneController;
+
     [SerializeField] private GameObject _pauseMenu;
+
     public bool GameStart = false;
     public static int Level = 0;
     public static bool Win;
@@ -269,7 +274,7 @@ public class MarbleGameController : MonoBehaviour
             _marbleX = Random.Range(0.4f, 8);
             _marbleY = Random.Range(-4, 4);
 
-            GameObject newMarble = (GameObject)Instantiate(MarblePrefab, new Vector3(_marbleX, _marbleY, 0), Quaternion.identity);
+            GameObject newMarble = (GameObject)Instantiate(_marblePrefab, new Vector3(_marbleX, _marbleY, 0), Quaternion.identity);
             newMarble.transform.localScale = new Vector3(_localScale, _localScale, _localScale);
             newMarble.GetComponent<CircleCollider2D>().radius = _radius;
 
@@ -329,7 +334,7 @@ public class MarbleGameController : MonoBehaviour
         {
             int _type = Random.Range(1, 4);
 
-            GameObject newEnemy = (GameObject)Instantiate(Enemyprefab, new Vector3(_enemyX[i], _enemyY, 0), Quaternion.identity);
+            GameObject newEnemy = (GameObject)Instantiate(_enemyprefab, new Vector3(_enemyX[i], _enemyY, 0), Quaternion.identity);
             if (level == 1)
             {
                 newEnemy.GetComponent<Enemy>().Health = 10;
@@ -372,7 +377,7 @@ public class MarbleGameController : MonoBehaviour
 
     void SpawnCharacter()
     {
-        GameObject newCharacter = (GameObject)Instantiate(CharacterPrefeb, new Vector3(_characterX, _characterY, 0), Quaternion.identity);
+        GameObject newCharacter = (GameObject)Instantiate(_characterPrefeb, new Vector3(_characterX, _characterY, 0), Quaternion.identity);
 
         newCharacter.GetComponent<Character>().Health = 10;
         newCharacter.GetComponent<Character>().Colour = _player.Colour;
@@ -441,9 +446,9 @@ public class MarbleGameController : MonoBehaviour
 
     void SpawnTextBox(float x, float y, string content)
     {
-        TMP_Text newtext = (TMP_Text)Instantiate(Text, new Vector3(x, y, 0), Quaternion.identity);
+        TMP_Text newtext = (TMP_Text)Instantiate(_text, new Vector3(x, y, 0), Quaternion.identity);
         newtext.GetComponent<TMP_Text>().text = content;
-        newtext.transform.SetParent(Canvas.transform);
+        newtext.transform.SetParent(_canvas.transform);
         TextList.Add(newtext);
     }
 

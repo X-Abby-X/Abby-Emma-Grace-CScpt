@@ -5,25 +5,24 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
-
+    [SerializeField] private Player _player;
 
     public Vector2 PlayerOnMapPosition;
     public List<bool> StoreButtonActiveList = new List<bool>();
     public float Volume = -10000f;
-    [SerializeField] private Player _player;
+    public List<bool> ColourOptionsOn = new List<bool> { false, false, false };
+
     private int _currentSceneIndex;
     private int _previousSceneIndex;
-    public List<bool> ColourOptionsOn = new List<bool> { false, false, false };
+    
 
     void Awake()
     {
         PlayerOnMapPosition = new Vector2(-6.23f, -2.91f);
-
     }
 
     void Start()
     {
-        
         GameObject[] objects = GameObject.FindGameObjectsWithTag("Scene Controller");
 
         if (objects.Length > 1)
@@ -32,7 +31,6 @@ public class SceneController : MonoBehaviour
         }
 
         DontDestroyOnLoad(this.gameObject);
-
     }
 
     void Update()
@@ -66,8 +64,6 @@ public class SceneController : MonoBehaviour
                 ToStore();
             }
         }
-
-
     }
 
     public void ToPrevious()

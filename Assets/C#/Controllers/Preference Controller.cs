@@ -8,24 +8,21 @@ public class PreferenceController : MonoBehaviour
 {
     [SerializeField] private AudioMixer _audioMixer;
     [SerializeField] private Slider _musicSlider;
-    private SceneController _sceneController;
-    private Player _player;
-    public Button BackButton;
     [SerializeField] private List<Toggle> _colourOptions;
-
+    [SerializeField] private Button _backButton;
+    
+    private Player _player;
+    private SceneController _sceneController;
 
     void Awake()
     {
         _player = GameObject.FindWithTag("Player").GetComponent<Player>();
         _sceneController = GameObject.FindWithTag("Scene Controller").GetComponent<SceneController>();
-        //_colourOptions[0].isOn = true;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        
-        BackButton.onClick.AddListener(_sceneController.ToPrevious);
+        _backButton.onClick.AddListener(_sceneController.ToPrevious);
         if (_sceneController.Volume == -10000f)
         {
             SetVolume();
@@ -35,6 +32,11 @@ public class PreferenceController : MonoBehaviour
             LoadVolume();
         }
 
+    }
+
+    void Update()
+    {
+        LoadColourOption();
     }
 
     public void SetVolume()
@@ -87,9 +89,4 @@ public class PreferenceController : MonoBehaviour
     }
 
 
-    // Update is called once per frame
-    void Update()
-    {
-        LoadColourOption();
-    }
 }

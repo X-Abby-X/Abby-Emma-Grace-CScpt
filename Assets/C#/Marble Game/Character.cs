@@ -8,7 +8,7 @@ using static UnityEditor.Progress;
 public class Character : Person
 {
     public int MaxHealth;
-    public Player Player;
+    private Player _player;
     public Ball Ball;
     private bool _bonus = false;
     public bool _applied = false;
@@ -20,7 +20,7 @@ public class Character : Person
 
     void Awake()
     {
-        Player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        _player = GameObject.FindWithTag("Player").GetComponent<Player>();
     }
 
     void Start()
@@ -30,7 +30,7 @@ public class Character : Person
 
     void ApplyPowerUp()
     {
-        foreach (Item item in Player.SortedBackpack.Keys)
+        foreach (Item item in _player.SortedBackpack.Keys)
         {
             if (item is StatsItems)
             {
@@ -138,7 +138,7 @@ public class Character : Person
     void ApplyHealthPowerUp()
     {
         Debug.Log("ApplyPowerUp method start");
-        foreach (KeyValuePair<Item, int> kvp in Player.SortedBackpack)
+        foreach (KeyValuePair<Item, int> kvp in _player.SortedBackpack)
         {
             if (kvp.Key is OtherItems)
             {
@@ -152,18 +152,18 @@ public class Character : Person
                         Debug.Log(this.MaxHealth);
                         this.Health = this.MaxHealth;
                         _applied = true;
-                        Player.SortedInventory[kvp.Key] -= 1;
+                        _player.SortedInventory[kvp.Key] -= 1;
                     }
 
                     if (kvp.Value <= 1)
                     {
-                        Player.Inventory.Remove(kvp.Key);
-                        Player.SortedInventory.Remove(kvp.Key);
-                        Player.SortItemList(Player.Inventory, Player.SortedInventory);
+                        _player.Inventory.Remove(kvp.Key);
+                        _player.SortedInventory.Remove(kvp.Key);
+                        _player.SortItemList(_player.Inventory, _player.SortedInventory);
 
-                        Player.Backpack.Remove(kvp.Key);
-                        Player.SortedBackpack.Remove(kvp.Key);
-                        Player.SortItemList(Player.Backpack, Player.SortedBackpack);
+                        _player.Backpack.Remove(kvp.Key);
+                        _player.SortedBackpack.Remove(kvp.Key);
+                        _player.SortItemList(_player.Backpack, _player.SortedBackpack);
                     }
                     break;
                 }

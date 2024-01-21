@@ -1142,15 +1142,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c867a6a149c1440f481d96c91f8b4582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enemyprefab: {fileID: 2049198230}
+  _enemyprefab: {fileID: 2049198230}
   EnemyList: []
-  CharaterTotalHP: 0
-  CharacterPrefeb: {fileID: 1663080167}
+  _characterPrefeb: {fileID: 1663080167}
   CharacterList: []
-  Canvas: {fileID: 943254191}
-  Text: {fileID: 290675490}
+  CharaterTotalHP: 0
+  _canvas: {fileID: 943254194}
+  _text: {fileID: 290675490}
   TextList: []
-  MarblePrefab: {fileID: 1699770189}
+  _marblePrefab: {fileID: 1699770189}
   MarbleList: []
   _pauseMenu: {fileID: 1256611684}
   GameStart: 0
@@ -1320,7 +1320,7 @@ GameObject:
   - component: {fileID: 1137864335}
   - component: {fileID: 1137864334}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: Pause Screen Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2309,7 +2309,7 @@ GameObject:
   - component: {fileID: 1919772326}
   - component: {fileID: 1919772325}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: Quit Button Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class AudioController : MonoBehaviour
 {
-    public AudioSource MusicSource;
-    public AudioClip BackGroundMusic;
-
-
+    [SerializeField] private AudioSource _musicSource;
+    [SerializeField] private AudioClip _backGroundMusic;
 
     // Start is called before the first frame update
     void Start()
@@ -21,8 +19,8 @@ public class AudioController : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject);
 
-        MusicSource.clip = BackGroundMusic;
-        MusicSource.Play();
+        _musicSource.clip = _backGroundMusic;
+        _musicSource.Play();
     }
 
     // Update is called once per frame

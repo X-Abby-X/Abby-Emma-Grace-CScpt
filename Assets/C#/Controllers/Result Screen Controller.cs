@@ -10,11 +10,13 @@ using UnityEngine.UI;
 public class ResultScreen : MonoBehaviour
 {
 
-    public GameObject Canvas;
-    public TMP_Text Text;
+    [SerializeField] private Canvas _canvas;
+    [SerializeField] private TMP_Text _text;
+    [SerializeField] private Button _toWorldMapButton;
+
     private Player _player;
     private SceneController _sceneController;
-    [SerializeField] private Button _toWorldMapButton;
+    
 
     void Awake()
     {
@@ -48,8 +50,8 @@ public class ResultScreen : MonoBehaviour
 
     void SpawnTextBox(float x, float y, string content)
     {
-        TMP_Text newtext = (TMP_Text)Instantiate(Text, new Vector3(x, y, 0), Quaternion.identity);
+        TMP_Text newtext = (TMP_Text)Instantiate(_text, new Vector3(x, y, 0), Quaternion.identity);
         newtext.GetComponent<TMP_Text>().text = content;
-        newtext.transform.SetParent(Canvas.transform);
+        newtext.transform.SetParent(_canvas.transform);
     }
 }

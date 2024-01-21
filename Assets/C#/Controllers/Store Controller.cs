@@ -1,21 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-using static UnityEditor.Progress;
 
 public class StoreController : MonoBehaviour
 {
     private Player _player;
     private SceneController _sceneController;
     private List<Item> _storeInventory = new List<Item>();
-    
-    
-    public List<Button> ButtonList = new List<Button>();
+    private List<Button> _buttonList = new List<Button>();
 
     [SerializeField] private Canvas _canvas;
     [SerializeField] private Button _buttonPrefab;
@@ -37,9 +33,9 @@ public class StoreController : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < ButtonList.Count; i++)
+        for (int i = 0; i < _buttonList.Count; i++)
         {
-            ButtonList[i].interactable = _sceneController.StoreButtonActiveList[i];
+            _buttonList[i].interactable = _sceneController.StoreButtonActiveList[i];
         }
 
     }
@@ -55,21 +51,21 @@ public class StoreController : MonoBehaviour
         {
             Button newButton = (Button)Instantiate(_buttonPrefab, new Vector3(_buttonX[i], _buttonY[i], 0), Quaternion.identity);
             newButton.transform.SetParent(_canvas.transform);
-            ButtonList.Add(newButton);
+            _buttonList.Add(newButton);
             _sceneController.StoreButtonActiveList.Add(true);
             newButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = $"Buy, ${_storeInventory[i].Cost}";
         }
 
-        for (int i = 0; i < ButtonList.Count; i++)
+        for (int i = 0; i < _buttonList.Count; i++)
         {
             int num = i;
             if (i < 3)
             {
-                ButtonList[i].onClick.AddListener(delegate { OneTimePowerUp(num); });
+                _buttonList[i].onClick.AddListener(delegate { OneTimePowerUp(num); });
             }
             else if (i >= 3)
             {
-                ButtonList[i].onClick.AddListener(delegate { MultiplePowerUp(num); });
+                _buttonList[i].onClick.AddListener(delegate { MultiplePowerUp(num); });
             }
         }
     }
@@ -111,7 +107,7 @@ public class StoreController : MonoBehaviour
         {
             Buy(_storeInventory[i]);
             _sceneController.StoreButtonActiveList[i] = false;
-            ButtonList[i].interactable = false;
+            _buttonList[i].interactable = false;
         }
         else
         {
