@@ -10,21 +10,27 @@ using static UnityEditor.Progress;
 
 public class StoreController : MonoBehaviour
 {
-    public Player Player;
-    public List<Item> StoreInventory = new List<Item>();
-    public SceneController SceneController;
-    public TextMeshProUGUI MoneyText;
-    public Canvas Canvas;
-    public Button ButtonPrefab;
+    private Player _player;
+    private SceneController _sceneController;
+    private List<Item> _storeInventory = new List<Item>();
+    
+    
     public List<Button> ButtonList = new List<Button>();
+
+    [SerializeField] private Canvas _canvas;
+    [SerializeField] private Button _buttonPrefab;
+    [SerializeField] private TextMeshProUGUI _moneyText;
+    [SerializeField] private Button _toWorldMapButton;
+
 
     private float[] _buttonX = { -5.75f, 0, 5.96f, -5.75f, 0, 5.96f };
     private float[] _buttonY = { -0.28f, -0.28f, -0.28f, -3.39f, -3.39f, -3.39f };
 
     void Awake()
     {
-        Player = GameObject.FindWithTag("Player").GetComponent<Player>();
-        SceneController = GameObject.FindWithTag("Scene Controller").GetComponent<SceneController>();
+        _player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        _sceneController = GameObject.FindWithTag("Scene Controller").GetComponent<SceneController>();
+        _toWorldMapButton.onClick.AddListener(_sceneController.ToWorldMap);
         CreateStoreInventory();
         SpawnButton();
     }
@@ -33,25 +39,25 @@ public class StoreController : MonoBehaviour
     {
         for (int i = 0; i < ButtonList.Count; i++)
         {
-            ButtonList[i].interactable = SceneController.StoreButtonActiveList[i];
+            ButtonList[i].interactable = _sceneController.StoreButtonActiveList[i];
         }
 
     }
 
     void Update()
     {
-        MoneyText.text = $"You have ${Player.Money}";
+        _moneyText.text = $"You have ${_player.Money}";
     }
 
     void SpawnButton()
     {
-        for (int i = 0; i < StoreInventory.Count; i++)
+        for (int i = 0; i < _storeInventory.Count; i++)
         {
-            Button newButton = (Button)Instantiate(ButtonPrefab, new Vector3(_buttonX[i], _buttonY[i], 0), Quaternion.identity);
-            newButton.transform.SetParent(Canvas.transform);
+            Button newButton = (Button)Instantiate(_buttonPrefab, new Vector3(_buttonX[i], _buttonY[i], 0), Quaternion.identity);
+            newButton.transform.SetParent(_canvas.transform);
             ButtonList.Add(newButton);
-            SceneController.StoreButtonActiveList.Add(true);
-            newButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = $"Buy, ${StoreInventory[i].Cost}";
+            _sceneController.StoreButtonActiveList.Add(true);
+            newButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = $"Buy, ${_storeInventory[i].Cost}";
         }
 
         for (int i = 0; i < ButtonList.Count; i++)
@@ -77,34 +83,34 @@ public class StoreController : MonoBehaviour
         OtherItems KillEnemy = new OtherItems(1, "attack", "Kill An Enemy", 0);
         OtherItems MaxHealth = new OtherItems(1, "Hp", "MaxHealth", 0);
 
-        StoreInventory.Add(attack_power_up);
-        StoreInventory.Add(Hp_power_up);
-        StoreInventory.Add(MarbleSize);
-        StoreInventory.Add(MarbleColour);
-        StoreInventory.Add(KillEnemy);
-        StoreInventory.Add(MaxHealth);
+        _storeInventory.Add(attack_power_up);
+        _storeInventory.Add(Hp_power_up);
+        _storeInventory.Add(MarbleSize);
+        _storeInventory.Add(MarbleColour);
+        _storeInventory.Add(KillEnemy);
+        _storeInventory.Add(MaxHealth);
     }
 
     void Buy(Item item)
     {
         Debug.Log("Stuff Bought");
-        Player.Money -= item.Cost;
-        Debug.Log(Player.Money);
-        Player.Inventory.Add(item);
-        foreach (Item i in Player.Inventory  )
+        _player.Money -= item.Cost;
+        Debug.Log(_player.Money);
+        _player.Inventory.Add(item);
+        foreach (Item i in _player.Inventory  )
         {
             Debug.Log(i.Name);
         }
-        Player.SortItemList(Player.Inventory, Player.SortedInventory);
+        _player.SortItemList(_player.Inventory, _player.SortedInventory);
     }
 
     public void OneTimePowerUp(int i)
     {
         Debug.Log("Button Pressed");
-        if (Player.Money >= StoreInventory[i].Cost)
+        if (_player.Money >= _storeInventory[i].Cost)
         {
-            Buy(StoreInventory[i]);
-            SceneController.StoreButtonActiveList[i] = false;
+            Buy(_storeInventory[i]);
+            _sceneController.StoreButtonActiveList[i] = false;
             ButtonList[i].interactable = false;
         }
         else
@@ -118,9 +124,9 @@ public class StoreController : MonoBehaviour
     public void MultiplePowerUp(int i)
     {
         Debug.Log("Button Pressed");
-        if (Player.Money >= StoreInventory[i].Cost)
+        if (_player.Money >= _storeInventory[i].Cost)
         {
-            Buy(StoreInventory[i]);
+            Buy(_storeInventory[i]);
         }
         else
         {

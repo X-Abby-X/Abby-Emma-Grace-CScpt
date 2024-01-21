@@ -948,12 +948,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c77ed4073034b7db772eaa08bacf11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 0}
-  SceneController: {fileID: 0}
-  MoneyText: {fileID: 1079814870}
-  Canvas: {fileID: 88555987}
-  ButtonPrefab: {fileID: 1833324366}
   ButtonList: []
+  _canvas: {fileID: 88555987}
+  _buttonPrefab: {fileID: 1833324366}
+  _moneyText: {fileID: 1079814870}
+  _toWorldMapButton: {fileID: 2120986219}
 --- !u!1 &661373922
 GameObject:
   m_ObjectHideFlags: 0
