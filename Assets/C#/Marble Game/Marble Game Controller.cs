@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 using static UnityEditor.Progress;
+using UnityEngine.Audio;
 
 public class MarbleGameController : MonoBehaviour
 {
@@ -41,49 +42,65 @@ public class MarbleGameController : MonoBehaviour
     private int _colourType = 0;
 
     // Game control
-    public Player Player;
-    public GameObject PauseMenu;
+    private Player _player;
+    private SceneController _sceneController;
+    [SerializeField] private GameObject _pauseMenu;
     public bool GameStart = false;
     public static int Level = 0;
     public static bool Win;
     public static int XPEarned = 0;
     public static int MoneyEarned = 0;
     public static bool GamePaused = false;
-    
+
+    //music
+    [SerializeField] private AudioMixer _audioMixer;
+    [SerializeField] private Slider _musicSlider;
+
+
     private void Awake()
     {
-        Player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        _player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        _sceneController = GameObject.FindWithTag("Scene Controller").GetComponent<SceneController>();
     }
 
     public void Resume()
     {
-        PauseMenu.SetActive(false);
+        _pauseMenu.SetActive(false);
         Time.timeScale = 1f;
         GamePaused = false;
     }
 
     public void Quit()
     {
-        PauseMenu.SetActive(false);
+        _pauseMenu.SetActive(false);
         Time.timeScale = 1f;
         GamePaused = false;
         Win = false;
         GameStart = false;
-        Player.GetStats();
+        _player.GetStats();
         SceneManager.LoadScene("Result");
     }
 
     public void Pause()
     {
-        PauseMenu.SetActive(true);
+        _pauseMenu.SetActive(true);
         Time.timeScale = 0f;
         GamePaused = true;
     }
 
-
     IEnumerator Start()
     {
-        PauseMenu.SetActive(false);
+
+        if (_sceneController.Volume == -10000f)
+        {
+            SetVolume();
+        }
+        else
+        {
+            LoadVolume();
+        }
+
+        _pauseMenu.SetActive(false);
         SpawnCharacter();
         SpawnEnemy(Level);
         SortEnemy(EnemyList);
@@ -106,9 +123,20 @@ public class MarbleGameController : MonoBehaviour
             {
                 Pause();
             }
-
-            
         }
+    }
+
+    public void SetVolume()
+    {
+        float volume = _musicSlider.value;
+        _audioMixer.SetFloat("Background Music", Mathf.Log10(volume) * 20);
+        _sceneController.Volume = volume;
+    }
+
+    public void LoadVolume()
+    {
+        _musicSlider.value = _sceneController.Volume;
+        SetVolume();
     }
 
     void GameSequence()
@@ -120,7 +148,7 @@ public class MarbleGameController : MonoBehaviour
 
         MarbleList.Clear();
         SpawnMarble();
-        CharacterList[0].GetComponent<Character>().Strength = Player.Level;
+        CharacterList[0].GetComponent<Character>().Strength = _player.Level;
 
         GameStart = true;
 
@@ -151,18 +179,20 @@ public class MarbleGameController : MonoBehaviour
                 XPEarned = 40;
                 MoneyEarned = 50;
             }
-            Player.XP += XPEarned;
-            Player.Money += MoneyEarned;
-            Player.Save();
-            Player.levelUp();
+            _player.XP += XPEarned;
+            _player.Money += MoneyEarned;
+            _player.Save();
+            _player.levelUp();
         }
         else
         {
             Win = false;
+            XPEarned = 0;
+            MoneyEarned = 0;
         }
 
         GameStart = false;
-        Player.GetStats();
+        _player.GetStats();
         SceneManager.LoadScene("Result");
     }
 
@@ -189,7 +219,7 @@ public class MarbleGameController : MonoBehaviour
     void ApplyMarbleColourPowerUp()
     {
         Debug.Log("ApplyPowerUp method start");
-        foreach (KeyValuePair<Item, int> kvp in Player.SortedBackpack)
+        foreach (KeyValuePair<Item, int> kvp in _player.SortedBackpack)
         {
             if (kvp.Key is MarbleItems)
             {
@@ -199,8 +229,8 @@ public class MarbleGameController : MonoBehaviour
                 {
                     Debug.Log("found colour");
                     _colourType = powerup.ColourValue;
-                    Player.Inventory.Remove(kvp.Key);
-                    Player.SortItemList(Player.Inventory, Player.SortedInventory);
+                    _player.Inventory.Remove(kvp.Key);
+                    _player.SortItemList(_player.Inventory, _player.SortedInventory);
                     randomColour = false;
                     break;
                 }
@@ -209,14 +239,12 @@ public class MarbleGameController : MonoBehaviour
         }
     }
 
-
-
     void SpawnMarble()
     {
         float _localScale = 0.08f;
         float _radius = 1.1f;
 
-        foreach (KeyValuePair<Item, int> kvp in Player.SortedBackpack)
+        foreach (KeyValuePair<Item, int> kvp in _player.SortedBackpack)
         {
             if (kvp.Key is MarbleItems)
             {
@@ -273,7 +301,7 @@ public class MarbleGameController : MonoBehaviour
     void SpawnEnemy(int level)
     {
         Debug.Log("ApplyPowerUp method start");
-        foreach (KeyValuePair<Item, int> kvp in Player.SortedBackpack)
+        foreach (KeyValuePair<Item, int> kvp in _player.SortedBackpack)
         {
             if (kvp.Key is OtherItems)
             {
@@ -284,14 +312,14 @@ public class MarbleGameController : MonoBehaviour
                     if (kvp.Value >= 1)
                     {
                         _enemyNum -= 1;
-                        Player.SortedInventory[kvp.Key] -= 1;
+                        _player.SortedInventory[kvp.Key] -= 1;
                     }
 
                     if (kvp.Value <= 1)
                     {
-                        Player.Inventory.Remove(kvp.Key);
-                        Player.SortedInventory.Remove(kvp.Key);
-                        Player.SortItemList(Player.Inventory, Player.SortedInventory);
+                        _player.Inventory.Remove(kvp.Key);
+                        _player.SortedInventory.Remove(kvp.Key);
+                        _player.SortItemList(_player.Inventory, _player.SortedInventory);
                     }
                 }
             }
@@ -347,7 +375,7 @@ public class MarbleGameController : MonoBehaviour
         GameObject newCharacter = (GameObject)Instantiate(CharacterPrefeb, new Vector3(_characterX, _characterY, 0), Quaternion.identity);
 
         newCharacter.GetComponent<Character>().Health = 10;
-        newCharacter.GetComponent<Character>().Colour = "Red";
+        newCharacter.GetComponent<Character>().Colour = _player.Colour;
         newCharacter.GetComponent<Character>().ColourBonus = 2;
         newCharacter.GetComponent<Character>().MaxHealth = newCharacter.GetComponent<Character>().Health;
         SpawnTextBox((_characterX + 2.82f), (_characterY - 2.1f), CharaterTotalHP.ToString());

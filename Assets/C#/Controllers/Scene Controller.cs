@@ -9,16 +9,20 @@ public class SceneController : MonoBehaviour
 
     public Vector2 PlayerOnMapPosition;
     public List<bool> StoreButtonActiveList = new List<bool>();
-    public Player Player;
+    public float Volume = -10000f;
+    [SerializeField] private Player _player;
+    private int _currentSceneIndex;
+    private int _previousSceneIndex;
 
     void Awake()
     {
         PlayerOnMapPosition = new Vector2(-6.23f, -2.91f);
+
     }
 
     void Start()
     {
-        Player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        
         GameObject[] objects = GameObject.FindGameObjectsWithTag("Scene Controller");
 
         if (objects.Length > 1)
@@ -32,6 +36,8 @@ public class SceneController : MonoBehaviour
 
     void Update()
     {
+        _currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+
         if (SceneManager.GetActiveScene().name == "Store")
         {
             if (Input.GetKey(KeyCode.Return))
@@ -63,8 +69,21 @@ public class SceneController : MonoBehaviour
 
     }
 
+    public void ToPrevious()
+    {
+        if (_previousSceneIndex >= 0)
+        {
+            SceneManager.LoadScene(_previousSceneIndex);
+        }
+        else
+        {
+            Debug.Log("No previous scene available.");
+        }
+    }
+
     public void ToSaveFile()
     {
+        _previousSceneIndex = _currentSceneIndex;
         SceneManager.LoadScene("Save File");
     }
 
@@ -75,11 +94,13 @@ public class SceneController : MonoBehaviour
 
     public void ToStore()
     {
+        _previousSceneIndex = _currentSceneIndex;
         SceneManager.LoadScene("Store");
     }
 
     public void ToPreference()
     {
+        _previousSceneIndex = _currentSceneIndex;
         SceneManager.LoadScene("Preference");
     }
 }

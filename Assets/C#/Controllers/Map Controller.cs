@@ -23,4 +23,9 @@ public class MapController : MonoBehaviour
     {
         Player.Save();
     }
+
+    public void ToPreference()
+    {
+        SceneController.ToPreference();
+    }
 }

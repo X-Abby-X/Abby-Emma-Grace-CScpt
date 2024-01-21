@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public int Money;
     public int XP;
     public int Level;
+    public string Colour = "Red";
     public SceneController SceneController;
     public List<Item> Inventory = new List<Item>();
     public Dictionary<Item, int> SortedInventory = new Dictionary<Item, int>();
