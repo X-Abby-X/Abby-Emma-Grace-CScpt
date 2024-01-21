@@ -28,16 +28,6 @@ public class MapController : MonoBehaviour
 
     void SpawnCoin()
     {
-        //GameObject[] coins = GameObject.FindGameObjectsWithTag("Coin");
-        //if (coins.Length > 0)
-        //{
-        //    foreach (GameObject coin in coins)
-        //    {
-        //        Destroy(coin);
-        //    }
-        //}
-
-            
         for (int i = 0; i < 6; i++)
         {
             float _coinX = Random.Range(-8, 8);
