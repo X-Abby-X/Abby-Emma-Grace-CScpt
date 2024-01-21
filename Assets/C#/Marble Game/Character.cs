@@ -137,6 +137,7 @@ public class Character : Person
 
     void ApplyHealthPowerUp()
     {
+
         Debug.Log("ApplyPowerUp method start");
         foreach (KeyValuePair<Item, int> kvp in _player.SortedBackpack)
         {
@@ -147,29 +148,25 @@ public class Character : Person
                 if (powerup.Type == "Hp")
                 {
                     Debug.Log("found Hp");
-                    if (kvp.Value >= 1)
-                    {
-                        Debug.Log(this.MaxHealth);
-                        this.Health = this.MaxHealth;
-                        _applied = true;
-                        _player.SortedInventory[kvp.Key] -= 1;
-                    }
 
-                    if (kvp.Value <= 1)
-                    {
-                        _player.Inventory.Remove(kvp.Key);
-                        _player.SortedInventory.Remove(kvp.Key);
-                        _player.SortItemList(_player.Inventory, _player.SortedInventory);
+                    Debug.Log(this.MaxHealth);
+                    this.Health = this.MaxHealth;
 
-                        _player.Backpack.Remove(kvp.Key);
-                        _player.SortedBackpack.Remove(kvp.Key);
-                        _player.SortItemList(_player.Backpack, _player.SortedBackpack);
-                    }
+
+                    _player.Inventory.Remove(kvp.Key);
+                    _player.SortItemList(_player.Inventory, _player.SortedInventory);
+
+                    _player.Backpack.Remove(kvp.Key);
+                    _player.SortItemList(_player.Backpack, _player.SortedBackpack);
+
+                    _applied = true;
                     break;
                 }
             }
+
         }
 
         MarbleGameController.UpdateValues();
     }
+
 }
