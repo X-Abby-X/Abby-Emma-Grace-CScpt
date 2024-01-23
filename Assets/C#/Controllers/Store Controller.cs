@@ -72,12 +72,12 @@ public class StoreController : MonoBehaviour
 
     void CreateStoreInventory()
     {
-        StatsItems attack_power_up = new StatsItems(1, "strength", "Attack Power Up", 0);
-        StatsItems Hp_power_up = new StatsItems(1, "hp", "Hp Power Up", 0);
-        MarbleItems MarbleSize = new MarbleItems(1, "size", "Marble Size Up", 0, "red");
-        MarbleItems MarbleColour = new MarbleItems(1, "colour", "Change All Marble to colour...", 0, "red");
-        OtherItems KillEnemy = new OtherItems(1, "attack", "Kill An Enemy", 0);
-        OtherItems MaxHealth = new OtherItems(1, "Hp", "MaxHealth", 0);
+        StatsItems attack_power_up = new StatsItems(1, "strength", "Attack Power Up", 10);
+        StatsItems Hp_power_up = new StatsItems(1, "hp", "Hp Power Up", 10);
+        MarbleItems MarbleSize = new MarbleItems(1, "size", "Marble Size Up", 10, "red");
+        MarbleItems MarbleColour = new MarbleItems(1, "colour", "Change All Marble to colour...", 10, "red");
+        OtherItems KillEnemy = new OtherItems(1, "attack", "Kill An Enemy", 10);
+        OtherItems MaxHealth = new OtherItems(1, "Hp", "MaxHealth", 10);
 
         _storeInventory.Add(attack_power_up);
         _storeInventory.Add(Hp_power_up);
