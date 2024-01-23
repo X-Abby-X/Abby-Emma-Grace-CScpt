@@ -37,14 +37,11 @@ public class MapController : MonoBehaviour
         }
     }
 
-
-
     void AddButtonListener()
     {
         _saveButton.onClick.AddListener(_player.Save);
         _loadSaveFileButton.onClick.AddListener(_sceneController.ToSaveFile);
         _preferenceButton.onClick.AddListener(_sceneController.ToPreference);
-
     }
 
 

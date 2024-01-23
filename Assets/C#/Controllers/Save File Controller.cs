@@ -16,8 +16,6 @@ public class SaveFileController : MonoBehaviour
     private float[] _buttonY = { 1.31f, 1.31f, 1.31f, -1.31f, -1.31f, -1.31f };
     public List<Button> ButtonList = new List<Button>();
     
-
-
     void Awake()
     {
         _player = GameObject.FindWithTag("Player").GetComponent<Player>();

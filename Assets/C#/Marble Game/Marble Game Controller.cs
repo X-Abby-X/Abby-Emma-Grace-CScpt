@@ -223,24 +223,17 @@ public class MarbleGameController : MonoBehaviour
 
     void ApplyMarbleColourPowerUp()
     {
-        Debug.Log("ApplyPowerUp method start");
-        foreach (KeyValuePair<Item, int> kvp in _player.SortedBackpack)
+        foreach (Item item in _player.Backpack)
         {
-            if (kvp.Key is MarbleItems)
+            if (item.Name == "Change All Marble to colour...")
             {
-                Debug.Log("found MarbleItems");
-                MarbleItems powerup = (MarbleItems)kvp.Key;
-                if (powerup.Type == "colour")
-                {
-                    Debug.Log("found colour");
-                    _colourType = powerup.ColourValue;
-                    _player.Inventory.Remove(kvp.Key);
-                    _player.SortItemList(_player.Inventory, _player.SortedInventory);
-                    randomColour = false;
-                    break;
-                }
+                MarbleItems powerup = (MarbleItems)item;
+                _colourType = powerup.ColourValue;
+                _player.Inventory.Remove(powerup);
+                _player.SortItemList(_player.Inventory, _player.SortedInventory);
+                randomColour = false;
+                break;
             }
-
         }
     }
 

@@ -44,19 +44,6 @@ public class Player : MonoBehaviour
             this.StoreButtonActiveList = storeButtonActiveList;
         }
 
-        public void GetStats()
-        {
-            Debug.Log("Print Save File");
-            Debug.Log(this.ID);
-            Debug.Log(this.Money);
-            Debug.Log(this.XP);
-            Debug.Log(this.Level);
-            foreach (Item i in Inventory)
-            {
-                Debug.Log(i.Name);
-            }
-        }
-
     }
 
     public void Save()
@@ -107,8 +94,6 @@ public class Player : MonoBehaviour
     public void SetColour(string colour)
     {
         this.Colour = colour;
-
-
         if (this.Colour == "Red")
         {
             this.GetComponent<SpriteRenderer>().sprite = SpriteArray[0];
@@ -182,8 +167,6 @@ public class Player : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D collision)
     {
-       
-
         if (Input.GetKey(KeyCode.Return))
         {
             if (collision.tag == "Store")
@@ -219,23 +202,18 @@ public class Player : MonoBehaviour
         foreach (Item item in list)
         {
             bool Added = false;
-
             foreach (Item key in Dictionary.Keys)
             {
                 if (key.Name == item.Name)
                 {
                     Dictionary[item] += 1;
-                    Debug.Log("Found");
                     Added = true;
                     break;
                 }
             }
-
             if (Added == false)
             {
-                Debug.Log(item.Name);
                 Dictionary.Add(item, 1);
-                Debug.Log("New");
             }
 
         }

@@ -67,10 +67,6 @@ public class Prepcontroller : MonoBehaviour
         _player.Backpack.Add(item);
         _buttonList[num].interactable = false;
         _player.SortItemList(_player.Backpack, _player.SortedBackpack);
-        foreach (Item i in _player.Backpack)
-        {
-            Debug.Log(i.Name);
-        }
     }
 
 

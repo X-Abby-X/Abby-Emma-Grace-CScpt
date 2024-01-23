@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TreeEditor;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 using static UnityEditor.Progress;
 
 public class Character : Person
@@ -139,31 +140,35 @@ public class Character : Person
 
     void ApplyHealthPowerUp()
     {
-
-        Debug.Log("ApplyPowerUp method start");
         foreach (KeyValuePair<Item, int> kvp in _player.SortedBackpack)
         {
-            if (kvp.Key is OtherItems)
+            if (kvp.Key.Name == "MaxHealth")
             {
-                Debug.Log("found OtherItems");
-                OtherItems powerup = (OtherItems)kvp.Key;
-                if (powerup.Type == "Hp")
+                this.Health = this.MaxHealth;
+
+
+                _player.Inventory.Remove(kvp.Key);
+                if (kvp.Value <= 1)
                 {
-                    Debug.Log("found Hp");
-
-                    Debug.Log(this.MaxHealth);
-                    this.Health = this.MaxHealth;
-
-
-                    _player.Inventory.Remove(kvp.Key);
-                    _player.SortItemList(_player.Inventory, _player.SortedInventory);
-
-                    _player.Backpack.Remove(kvp.Key);
-                    _player.SortItemList(_player.Backpack, _player.SortedBackpack);
-
-                    _applied = true;
-                    break;
+                    _player.SortedInventory.Remove(kvp.Key);
                 }
+                else
+                {
+                    _player.SortedInventory[kvp.Key] -= 1;
+                }
+               
+                _player.Backpack.Remove(kvp.Key);
+                if (kvp.Value <= 1)
+                {
+                    _player.SortedBackpack.Remove(kvp.Key);
+                }
+                else
+                {
+                    _player.SortedBackpack[kvp.Key] -= 1;
+                }
+
+                _applied = true;
+                break;
             }
 
         }
